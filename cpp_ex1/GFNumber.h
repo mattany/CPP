@@ -2,7 +2,14 @@
 // Created by mattan on 8/27/19.
 //
 
-#ifndef CPP_GFNUMBER_H
-#define CPP_GFNUMBER_H
+#ifndef CPP_EX1_GNUMBER_H
+#define CPP_EX1_GNUMBER_H
 
-#endif //CPP_GFNUMBER_H
+
+class GNumber
+{
+
+};
+
+
+#endif //CPP_EX1_GNUMBER_H
