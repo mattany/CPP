@@ -20,8 +20,7 @@ public:
 
 	GField(GField const &gField): GField(gField._p, gField._l) {}
 
-	~GField()
-	= default;
+	~GField(){}
 
 	long getChar() const
 	{ return _p; }

@@ -4,8 +4,74 @@
 
 #include "GFNumber.h"
 
-GFNumber::GFNumber(const GFNumber &other)
+long *GFNumber::getPrimeFactors() const
 {}
 
-long *GFNumber::getPrimeFactors() const
-{return 0;}
+std::string GFNumber::printFactors() const
+{}
+
+GFNumber &GFNumber::operator=(const GFNumber &other)
+{}
+
+GFNumber GFNumber::operator+(const GFNumber &other) const
+{}
+
+GFNumber &GFNumber::operator+=(const GFNumber &other)
+{}
+
+GFNumber GFNumber::operator-(const GFNumber &other) const
+{}
+
+GFNumber &GFNumber::operator-=(const GFNumber &other)
+{}
+
+GFNumber GFNumber::operator*(const GFNumber &other) const
+{}
+
+GFNumber &GFNumber::operator*=(const GFNumber &other)
+{}
+
+GFNumber GFNumber::operator%(const GFNumber &other) const
+{}
+
+GFNumber &GFNumber::operator%=(const GFNumber &other)
+{}
+
+GFNumber &GFNumber::operator=(const long other)
+{}
+
+GFNumber GFNumber::operator+(const long other) const
+{}
+
+GFNumber &GFNumber::operator+=(long other)
+{}
+
+GFNumber GFNumber::operator-(long other) const
+{}
+
+GFNumber &GFNumber::operator-=(long other)
+{}
+
+GFNumber GFNumber::operator*(long other) const
+{}
+
+GFNumber &GFNumber::operator*=(long other)
+{}
+
+GFNumber GFNumber::operator%(long other) const
+{}
+
+GFNumber &GFNumber::operator%=(long other)
+{}
+
+bool GFNumber::operator==(const GFNumber &other) const
+{}
+
+bool GFNumber::operator!=(const GFNumber &other) const
+{}
+
+bool GFNumber::operator<=(const GFNumber &other) const
+{}
+
+bool GFNumber::operator>=(const GFNumber &other) const
+{}

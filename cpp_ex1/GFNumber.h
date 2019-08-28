@@ -11,21 +11,77 @@
 class GFNumber
 {
 public:
-	GFNumber(long n, const GField& gField): _n(n), _gField(gField){}
+	GFNumber(long n, const GField &gField) : _n(n), _gField(gField)
+	{}
 
-	GFNumber(): GFNumber(0, GField()) {}
+	GFNumber() : GFNumber(0, GField())
+	{}
 
-	explicit GFNumber(long n): GFNumber(n, GField()) {}
+	explicit GFNumber(long n) : GFNumber(n, GField())
+	{}
 
-	GFNumber(const GFNumber& other);
+	GFNumber(const GFNumber &other): GFNumber(other._n, other._gField) {}
 
 	~GFNumber() {}
 
-	long getNumber() const {return _n;}
+	long getNumber() const
+	{ return _n; }
 
-	long* getPrimeFactors() const;
+	const GField &getField() const
+	{ return _gField; }
 
-	const GField& getField() const {return _gField;}
+	long *getPrimeFactors() const;
+
+	std::string printFactors() const;
+
+	bool getIsPrime() const
+	{ return GField::isPrime(_n); }
+
+	GFNumber &operator=(const GFNumber &other);
+
+	GFNumber operator+(const GFNumber &other) const;
+
+	GFNumber &operator+=(const GFNumber &other);
+
+	GFNumber operator-(const GFNumber &other) const;
+
+	GFNumber &operator-=(const GFNumber &other);
+
+	GFNumber operator*(const GFNumber &other) const;
+
+	GFNumber &operator*=(const GFNumber &other);
+
+	GFNumber operator%(const GFNumber &other) const;
+
+	GFNumber &operator%=(const GFNumber &other);
+
+	GFNumber &operator=(long other);
+
+	GFNumber operator+(long other) const;
+
+	GFNumber &operator+=(long other);
+
+	GFNumber operator-(long other) const;
+
+	GFNumber &operator-=(long other);
+
+	GFNumber operator*(long other) const;
+
+	GFNumber &operator*=(long other);
+
+	GFNumber operator%(long other) const;
+
+	GFNumber &operator%=(long other);
+
+	bool operator==(const GFNumber &other) const;
+
+	bool operator!=(const GFNumber &other) const;
+
+	bool operator<=(const GFNumber &other) const;
+
+	bool operator>=(const GFNumber &other) const;
+
+
 private:
 	long _n;
 	GField _gField;
