@@ -3,7 +3,9 @@
 //
 
 
+#include <assert.h>
 #include "GField.h"
+#include "GFNumber.h"
 
 bool GField::isPrime(long p)
 {
@@ -34,3 +36,36 @@ GField &GField::operator=(const GField &other)
 	_l = other._l;
 	return *this;
 }
+
+std::ostream &operator<<(std::ostream &out, GField &gField)
+{
+	out << "GF(" << gField._p << "**" << gField._l << ")";
+	return out;
+}
+
+std::istream &operator>>(std::istream &in, GField &gField)
+{
+	long p, l;
+	in >> p >> l;
+	assert(gField.isPrime(p) && l >= 0);
+	gField._p = p;
+	gField._l = l;
+}
+
+
+GFNumber GField::gcd(const GFNumber& num1, const GFNumber& num2) const
+{
+	assert(num1.getField() == num2.getField());
+	long a = num1.getNumber(), b = num2.getNumber();
+	while (b != 0)
+	{
+		long temp = b;
+		b = a % b;
+		a = temp;
+	}
+	return GFNumber(b);
+
+}
+
+GFNumber GField::createNumber(long k) const
+{return GFNumber(k, *this);}

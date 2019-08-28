@@ -3,3 +3,9 @@
 //
 
 #include "GFNumber.h"
+
+GFNumber::GFNumber(const GFNumber &other)
+{}
+
+long *GFNumber::getPrimeFactors() const
+{return 0;}

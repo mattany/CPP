@@ -6,22 +6,19 @@
 #define CPP_EX1_GFIELD_H
 
 #include <cmath>
-#include "GFNumber.h"
+
 #include <iostream>
+
+class GFNumber;
 
 class GField
 {
 public:
-	GField() :
-			_p(2), _l(1)
-	{}
+	explicit GField(long p, long l): _p(p), _l(l) {}
 
-	explicit GField(long p, long l) :
-			_p(p), _l(l)
-	{}
+	GField(): GField(2, 1) {}
 
-	GField(GField const &gField)
-	= default;
+	GField(GField const &gField): GField(gField._p, gField._l) {}
 
 	~GField()
 	= default;
@@ -37,19 +34,19 @@ public:
 
 	static bool isPrime(long p);
 
-	GFNumber gcd(GFNumber a, GFNumber b)  //TODO
-	{return a;}
+	GFNumber gcd(const GFNumber& num1, const GFNumber& num2) const;
 
-	GFNumber createNumber(long k) const
-	{return GFNumber(k, &this)}
+	GFNumber createNumber(long k) const;
 
 	GField & operator=(const GField &other);
 
-	bool operator==(GField &other) {return _p == other._p && _l == other._l}
+	bool operator==(const GField &other) const {return _p == other._p && _l == other._l;}
 
-	bool operator!=(GField &other) {return _p != other._p || _l != other._l}
+	bool operator!=(const GField &other) const {return _p != other._p || _l != other._l;}
 
-	friend std::ostream& operator>>(){}
+	friend std::ostream& operator<<(std::ostream& out, GField& gField);
+
+	friend std::istream& operator>>(std::istream& in, GField& gField);
 private:
 	long _p;
 	long _l;
