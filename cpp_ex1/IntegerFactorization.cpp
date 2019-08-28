@@ -1,4 +1,8 @@
-//
-// Created by mattan on 8/27/19.
-//
+#include <iostream>
 
+int main()
+{
+	GField();
+	std::cout << "Hello, World!" << std::endl;
+	return 0;
+}

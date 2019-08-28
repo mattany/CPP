@@ -11,7 +11,9 @@ bool GField::isPrime(long p)
 	for (long i = 0; i < root; i++)
 	{
 		if (p % i == 0)
+		{
 			return false;
+		}
 	}
 	return true;
 }
@@ -24,4 +26,11 @@ long GField::getOrder() const
 		ret *= _p;
 	}
 	return ret;
+}
+
+GField &GField::operator=(const GField &other)
+{
+	_p = other._p;
+	_l = other._l;
+	return *this;
 }

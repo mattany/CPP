@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include "GFNumber.h"
+#include <iostream>
 
 class GField
 {
@@ -19,7 +20,7 @@ public:
 			_p(p), _l(l)
 	{}
 
-	GField(GField &gField)
+	GField(GField const &gField)
 	= default;
 
 	~GField()
@@ -36,7 +37,19 @@ public:
 
 	static bool isPrime(long p);
 
+	GFNumber gcd(GFNumber a, GFNumber b)  //TODO
+	{return a;}
 
+	GFNumber createNumber(long k) const
+	{return GFNumber(k, &this)}
+
+	GField & operator=(const GField &other);
+
+	bool operator==(GField &other) {return _p == other._p && _l == other._l}
+
+	bool operator!=(GField &other) {return _p != other._p || _l != other._l}
+
+	friend std::ostream& operator>>(){}
 private:
 	long _p;
 	long _l;
