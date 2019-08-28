@@ -50,6 +50,7 @@ std::istream &operator>>(std::istream &in, GField &gField)
 	assert(gField.isPrime(p) && l >= 0);
 	gField._p = p;
 	gField._l = l;
+	return in;
 }
 
 

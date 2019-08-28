@@ -11,8 +11,13 @@
 class GFNumber
 {
 public:
-	GFNumber(long n, const GField &gField) : _n(n), _gField(gField)
-	{}
+	GFNumber(long n, const GField &gField) : _gField(gField)
+	{
+		_n = modulo(n);
+	}
+
+	long modulo(long n) const
+	{ return (n >= 0) ? (_gField.getOrder() % n) : (_gField.getOrder() % n + _gField.getOrder()); }
 
 	GFNumber() : GFNumber(0, GField())
 	{}
@@ -24,11 +29,9 @@ public:
 
 	~GFNumber() {}
 
-	long getNumber() const
-	{ return _n; }
+	long getNumber() const { return _n; }
 
-	const GField &getField() const
-	{ return _gField; }
+	const GField &getField() const { return _gField; }
 
 	long *getPrimeFactors() const;
 
