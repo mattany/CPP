@@ -14,7 +14,7 @@ class GFNumber;
 class GField
 {
 public:
-	explicit GField(long p, long l): _p(p), _l(l) {}
+	explicit GField(long p, long l): _p(p), _l(l) {assert (isPrime(p) && l > 0);}
 
 	GField(): GField(2, 1) {}
 

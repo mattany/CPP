@@ -9,8 +9,8 @@
 
 bool GField::isPrime(long p)
 {
-	long root = (long) ceil(sqrt(p));
-	for (long i = 0; i < root; i++)
+	double root = sqrt(p);
+	for (long i = 2; i <= root; i++)
 	{
 		if (p % i == 0)
 		{
@@ -47,7 +47,7 @@ std::istream &operator>>(std::istream &in, GField &gField)
 {
 	long p, l;
 	in >> p >> l;
-	assert(gField.isPrime(p) && l >= 0);
+    assert(gField.isPrime(p) && l >= 0);
 	gField._p = p;
 	gField._l = l;
 	return in;
