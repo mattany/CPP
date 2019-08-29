@@ -3,7 +3,7 @@
 //
 
 
-#include <assert.h>
+#include <cassert>
 #include "GField.h"
 #include "GFNumber.h"
 
@@ -37,7 +37,7 @@ GField &GField::operator=(const GField &other)
 	return *this;
 }
 
-std::ostream &operator<<(std::ostream &out, GField &gField)
+std::ostream &operator<<(std::ostream &out, const GField &gField)
 {
 	out << "GF(" << gField._p << "**" << gField._l << ")";
 	return out;

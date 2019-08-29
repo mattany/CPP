@@ -17,7 +17,7 @@ public:
 	}
 
 	long modulo(long n) const
-	{ return (n >= 0) ? (_gField.getOrder() % n) : (_gField.getOrder() % n + _gField.getOrder()); }
+	{ return (n >= 0) ? (n % _gField.getOrder()) : (n % _gField.getOrder() + _gField.getOrder());}
 
 	GFNumber() : GFNumber(0, GField())
 	{}
@@ -84,10 +84,19 @@ public:
 
 	bool operator>=(const GFNumber &other) const;
 
+	friend std::ostream &operator<<(std::ostream& out, const GFNumber& gfNumber);
 
+	friend std::istream &operator>>(std::istream& in, GFNumber& gfNumber);
+
+	long pollardRho(long number) const;
 private:
 	long _n;
 	GField _gField;
+
+	long rng(long n);
+
+	inline GFNumber f(const GFNumber&  n){ return GFNumber(n._n*n._n + 1, n._gField);}
+
 };
 
 

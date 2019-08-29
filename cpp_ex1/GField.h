@@ -6,7 +6,7 @@
 #define CPP_EX1_GFIELD_H
 
 #include <cmath>
-
+#include <cassert>
 #include <iostream>
 
 class GFNumber;
@@ -43,7 +43,7 @@ public:
 
 	bool operator!=(const GField &other) const {return _p != other._p || _l != other._l;}
 
-	friend std::ostream& operator<<(std::ostream& out, GField& gField);
+	friend std::ostream& operator<<(std::ostream& out, const GField& gField);
 
 	friend std::istream& operator>>(std::istream& in, GField& gField);
 private:

@@ -1,29 +1,19 @@
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include "GFNumber.h"
+#include "GField.h"
 
-void print(GField field);
-
-void print(GField a)
-{
-    std::cout << a << std::endl<<"Char: "  << a.getChar() << std::endl << "Degree: " <<
-              a.getDegree() << std::endl <<"Order: " << a.getOrder() << std::endl;
-}
 
 int main()
 {
-	GField a,b(43,444);
+	GFNumber a, b;
 
-    std::cout << "a == b: " << (a==b) << std::endl;
-    std::cout << "a != b: " << (a!=b) << std::endl;
-    std::cin >> a;
-    print(a);
-    print(b);
-    b = a;
-    print (a);
-    print(b);
+//    std::cin >> a >> b;
+//    std::cin.fail();
+//    std::cout << a + b << std::endl << a - b << std::endl;
+//    std::cout << b - a << std::endl << b * a << std::endl;
+	while (true){a.pollardRho(15); std::cout<<std::endl;}
 
-    assert(a == b);
 	return 0;
 }
 
