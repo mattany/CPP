@@ -6,6 +6,7 @@
 #include <cassert>
 #include "GField.h"
 #include "GFNumber.h"
+#include <algorithm>
 
 bool GField::isPrime(long p)
 {
@@ -60,13 +61,13 @@ GFNumber GField::gcd(const GFNumber& num1, const GFNumber& num2) const
 	assert(num1.getField() == num2.getField());
 	assert(*this == num2.getField());
 	long a = num1.getNumber(), b = num2.getNumber();
-	while (b != 0)
-	{
-		long temp = b;
-		b = a % b;
-		a = temp;
-	}
-	return GFNumber(b);
+//	while (b != 0)
+//	{
+//		long temp = b;
+//		b = a % b;
+//		a = temp;
+//	}
+	return GFNumber(std::__gcd(a,b), num1.getField());
 
 }
 

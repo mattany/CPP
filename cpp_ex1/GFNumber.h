@@ -88,7 +88,7 @@ public:
 
 	friend std::istream &operator>>(std::istream& in, GFNumber& gfNumber);
 
-	bool pollardRho(long number, long* (&factors), size_t & size) const; //TODO make private
+	bool pollardRho(long& number, long* (&factors), size_t & size) const; //TODO make private
 
 	void naiveSearch(long n, long* (&factors), size_t& size) const;  //TODO make private
 private:

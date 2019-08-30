@@ -10,24 +10,28 @@
 long *GFNumber::getPrimeFactors(size_t& size) const //todo
 {
     long n = _n;
-    assert(size == 1);  //todo Delete
     long* factors = new long[size];
     while (pollardRho(n, factors, size))
     {
-        n /= factors[-1];
+        n /= factors[size - 1];
     }
     naiveSearch(n, factors, size);
     return factors;
 }
 
-bool GFNumber::pollardRho(long number, long* (&factors), size_t & size) const
+bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
 {
     if (number == 1) return false;
+    while (number % 2 == 0)
+    {
+    	number /= 2;
+    	append(2, factors, size);
+    }
     GFNumber x(rng(number),_gField), y, p(1, _gField), n(number, _gField);
     while (p.getNumber() == 1)
     {
         x = f(x);
-        y = f(f(x));
+        y = f(x);
         p = _gField.gcd(GFNumber(labs(x._n-y._n), _gField), n);
     }
     if (p != n)
@@ -66,8 +70,8 @@ void GFNumber::append(long val, long *&array, size_t &size) const
     std::copy(array, array + size, ret);
     delete[] array;
     array = ret;
-    assert(array[-1] == 0);   //TODO delete
-    array[-1] = val;
+    assert(array[newSize - 1] == 0);   //TODO delete
+    array[newSize - 1] = val;
     size = newSize;
 }
 
@@ -82,18 +86,21 @@ long GFNumber::rng(long n) const
 
 void GFNumber::printFactors() const
 {
-    size_t size = 1;
+    size_t size = 0;
     long* factors = getPrimeFactors(size);
     std::cout << _n;
-    if (size != 1)
+	std::cout << "=";
+    for (size_t i = 0; i < size - 1; i++)
     {
-        std::cout << "=";
-        for (size_t i = 0; i < size; i++)
-        {
-            std::cout << factors[i] << "*";
-        }
+        std::cout << factors[i] << "*";
+    }
+    std::cout << factors[size - 1];
+    if (size == 1)
+    {
+	    std::cout << "*" << "1";
     }
     std::cout << std::endl;
+    delete[] factors;
 }
 
 GFNumber &GFNumber::operator=(const GFNumber &other)

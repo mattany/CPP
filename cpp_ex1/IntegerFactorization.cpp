@@ -14,7 +14,8 @@ int main()
     std::cout << a - b << std::endl;
     std::cout << b - a << std::endl;
     std::cout << b * a << std::endl;
-
+    a.printFactors();
+    b.printFactors();
 	return 0;
 }
 
