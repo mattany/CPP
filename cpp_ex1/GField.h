@@ -22,12 +22,9 @@ public:
 
 	~GField(){}
 
-	long getChar() const
-	{ return _p; }
+	inline long getChar() const { return _p; }
 
-	long getDegree() const
-	{ return _l; }
-
+    inline long getDegree() const { return _l; }
 
 	long getOrder() const;
 

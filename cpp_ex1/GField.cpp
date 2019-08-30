@@ -9,6 +9,7 @@
 
 bool GField::isPrime(long p)
 {
+    if (p < 2) return false;
 	double root = sqrt(p);
 	for (long i = 2; i <= root; i++)
 	{
@@ -57,6 +58,7 @@ std::istream &operator>>(std::istream &in, GField &gField)
 GFNumber GField::gcd(const GFNumber& num1, const GFNumber& num2) const
 {
 	assert(num1.getField() == num2.getField());
+	assert(*this == num2.getField());
 	long a = num1.getNumber(), b = num2.getNumber();
 	while (b != 0)
 	{

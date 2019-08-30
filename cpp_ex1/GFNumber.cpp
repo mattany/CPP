@@ -6,22 +6,23 @@
 #include "GFNumber.h"
 #include <random>
 #include <cmath>
-long *GFNumber::getPrimeFactors() const //todo
+
+long *GFNumber::getPrimeFactors(size_t& size) const //todo
 {
     long n = _n;
-    long* primes = new long[1];
-    while (n != 1)
+    assert(size == 1);  //todo Delete
+    long* factors = new long[size];
+    while (pollardRho(n, factors, size))
     {
-        if (pollardRho(n) == -1)
-        {
-
-        }
+        n /= factors[-1];
     }
-    return 0;
+    naiveSearch(n, factors, size);
+    return factors;
 }
 
-long GFNumber::pollardRho(long number) const
+bool GFNumber::pollardRho(long number, long* (&factors), size_t & size) const
 {
+    if (number == 1) return false;
     GFNumber x(rng(number),_gField), y, p(1, _gField), n(number, _gField);
     while (p.getNumber() == 1)
     {
@@ -29,10 +30,48 @@ long GFNumber::pollardRho(long number) const
         y = f(f(x));
         p = _gField.gcd(GFNumber(labs(x._n-y._n), _gField), n);
     }
-    return (p == n) ? -1 : p._n;
+    if (p != n)
+    {
+        append(p._n, factors, size);
+        return true;
+    }
+    return false;
 }
 
-long GFNumber::rng(long n)
+void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
+{
+    long i = 2;
+    while (i < sqrt(n))
+    {
+        if (n % i == 0)
+        {
+            append(i, factors, size);
+            n /= i;
+        }
+        else
+        {
+            i += 1;
+        }
+    }
+    if (n > 1)
+    {
+        append(n, factors, size);
+    }
+}
+
+void GFNumber::append(long val, long *&array, size_t &size) const
+{
+    size_t newSize = size + 1;
+    long * ret = new long[newSize];
+    std::copy(array, array + size, ret);
+    delete[] array;
+    array = ret;
+    assert(array[-1] == 0);   //TODO delete
+    array[-1] = val;
+    size = newSize;
+}
+
+long GFNumber::rng(long n) const
 {
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -41,8 +80,16 @@ long GFNumber::rng(long n)
     return distribution(rng);
 }
 
-std::string GFNumber::printFactors() const
-{ return 0; }
+void GFNumber::printFactors() const
+{
+    size_t size = 1;
+    long* factors = getPrimeFactors(size);
+    std::cout << _n << "=";
+    for (size_t i = 0; i < size; i++)
+    {
+
+    }
+}
 
 GFNumber &GFNumber::operator=(const GFNumber &other)
 {
@@ -181,5 +228,6 @@ std::istream &operator>>(std::istream &in, GFNumber &gfNumber)
     gfNumber._n = gfNumber.modulo(n);
 	return in;
 }
+
 
 

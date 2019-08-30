@@ -33,9 +33,9 @@ public:
 
 	const GField &getField() const { return _gField; }
 
-	long *getPrimeFactors() const;
+	long *getPrimeFactors(size_t& size) const;
 
-	std::string printFactors() const;
+	void printFactors() const;
 
 	bool getIsPrime() const
 	{ return GField::isPrime(_n); }
@@ -88,14 +88,19 @@ public:
 
 	friend std::istream &operator>>(std::istream& in, GFNumber& gfNumber);
 
-	long pollardRho(long number) const;
+	bool pollardRho(long number, long* (&factors), size_t & size) const; //TODO make private
+
+	void naiveSearch(long n, long* (&factors), size_t& size) const;  //TODO make private
 private:
 	long _n;
 	GField _gField;
 
-	long rng(long n);
+	long rng(long n) const;
 
-	inline GFNumber f(const GFNumber&  n){ return GFNumber(n._n*n._n + 1, n._gField);}
+	inline GFNumber f(const GFNumber&  n) const
+    { return GFNumber(n._n * n._n + 1, n._gField);}
+
+    void append(long val, long *&array, size_t &size) const;
 
 };
 
