@@ -84,11 +84,16 @@ void GFNumber::printFactors() const
 {
     size_t size = 1;
     long* factors = getPrimeFactors(size);
-    std::cout << _n << "=";
-    for (size_t i = 0; i < size; i++)
+    std::cout << _n;
+    if (size != 1)
     {
-
+        std::cout << "=";
+        for (size_t i = 0; i < size; i++)
+        {
+            std::cout << factors[i] << "*";
+        }
     }
+    std::cout << std::endl;
 }
 
 GFNumber &GFNumber::operator=(const GFNumber &other)
