@@ -16,6 +16,8 @@ class GField
 public:
 	explicit GField(long p, long l): _p(p), _l(l) {assert (isPrime(p) && l > 0);}
 
+	explicit GField(long p): GField(p, 1){};
+
 	GField(): GField(2, 1) {}
 
 	GField(GField const &gField): GField(gField._p, gField._l) {}

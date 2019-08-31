@@ -33,7 +33,7 @@ public:
 
 	const GField &getField() const { return _gField; }
 
-	long *getPrimeFactors(size_t& size) const;
+	GFNumber * getPrimeFactors(size_t &size) const;
 
 	void printFactors() const;
 

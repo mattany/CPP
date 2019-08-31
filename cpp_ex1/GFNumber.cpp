@@ -7,15 +7,21 @@
 #include <random>
 #include <cmath>
 
-long *GFNumber::getPrimeFactors(size_t& size) const //todo
+GFNumber * GFNumber::getPrimeFactors(size_t size) const //todo
 {
     long n = _n;
-    long* factors = new long[size];
-    while (pollardRho(n, factors, size))
+    long* temp = new long[size]();
+    while (pollardRho(n, temp, size))
     {
-        n /= factors[size - 1];
+        n /= temp[size - 1];
     }
-    naiveSearch(n, factors, size);
+    naiveSearch(n, temp, size);
+    auto* factors = new GFNumber[size];
+    for (int i = 0; i < size; i++)
+    {
+        factors[i] = GFNumber(temp[i], _gField);
+    }
+    delete[] temp;
     return factors;
 }
 
@@ -66,7 +72,8 @@ void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
 void GFNumber::append(long val, long *&array, size_t &size) const
 {
     size_t newSize = size + 1;
-    long * ret = new long[newSize];
+    long * ret = new long[newSize]();
+
     std::copy(array, array + size, ret);
     delete[] array;
     array = ret;
@@ -87,7 +94,7 @@ long GFNumber::rng(long n) const
 void GFNumber::printFactors() const
 {
     size_t size = 0;
-    long* factors = getPrimeFactors(size);
+    GFNumber* factors = getPrimeFactors(size);
     std::cout << _n;
 	std::cout << "=";
     for (size_t i = 0; i < size - 1; i++)
