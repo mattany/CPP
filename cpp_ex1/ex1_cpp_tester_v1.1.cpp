@@ -10,6 +10,9 @@ int main(int argc , char *argv[])
     return RUN_ALL_TESTS();
 }
 
+
+
+
 /**
  * GField related tests.
  */
@@ -315,69 +318,69 @@ TEST(GFNumberTest , GetField)
 /**
  * This tests both
  */
-TEST(GFNumberTest , GetPrimeFactors)
-{
-    GField gField(11 , 2);
-    GFNumber number0(0 , gField);
-    GFNumber number1(1 , gField);
-    GFNumber numberEven(16 , gField);
-    GFNumber numberOdd(25 , gField);
-    GFNumber numberPrime17(17 , gField);
-    GFNumber numberPrimeBig(2979367769891 , GField(2 , 42));
-
-    int numOfFactors = 0;
-
-    GFNumber *factors = number0.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 0);
-    delete[]factors;
-
-    numOfFactors = 0;
-    factors = number1.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 0);
-    delete[]factors;
-
-    numOfFactors = 0;
-    factors = numberEven.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 4);
-
-    for (int i = 0; i < numOfFactors; i++)
-    {
-        EXPECT_EQ(factors[i].getNumber() , 2);
-    }
-    delete[]factors;
-
-    numOfFactors = 0;
-    factors = numberOdd.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 2);
-    EXPECT_EQ(factors[0].getNumber() , 5);
-    EXPECT_EQ(factors[1].getNumber() , 5);
-
-    delete[]factors;
-
-    numOfFactors = 0;
-    factors = numberPrime17.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 0);
-    delete[]factors;
-
-    numOfFactors = 0;
-    factors = numberPrimeBig.getPrimeFactors(&numOfFactors);
-    EXPECT_EQ(numOfFactors , 2);
-
-    //Order is not imporant
-    long n1 = factors[0].getNumber() , n2 = factors[1].getNumber() , temp = 0;
-    delete[]factors;
-
-    if (n1 > n2)
-    {
-        temp = n2;
-        n2 = n1;
-        n1 = temp;
-    }
-
-    EXPECT_EQ(n1 , 101);
-    EXPECT_EQ(n2 , 29498690791);
-
-}
+//TEST(GFNumberTest , GetPrimeFactors)
+//{
+//    GField gField(11 , 2);
+//    GFNumber number0(0 , gField);
+//    GFNumber number1(1 , gField);
+//    GFNumber numberEven(16 , gField);
+//    GFNumber numberOdd(25 , gField);
+//    GFNumber numberPrime17(17 , gField);
+//    GFNumber numberPrimeBig(2979367769891 , GField(2 , 42));
+//
+//    int numOfFactors = 0;
+//
+//    GFNumber *factors = number0.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 0);
+//    delete[]factors;
+//
+//    numOfFactors = 0;
+//    factors = number1.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 0);
+//    delete[]factors;
+//
+//    numOfFactors = 0;
+//    factors = numberEven.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 4);
+//
+//    for (int i = 0; i < numOfFactors; i++)
+//    {
+//        EXPECT_EQ(factors[i].getNumber() , 2);
+//    }
+//    delete[]factors;
+//
+//    numOfFactors = 0;
+//    factors = numberOdd.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 2);
+//    EXPECT_EQ(factors[0].getNumber() , 5);
+//    EXPECT_EQ(factors[1].getNumber() , 5);
+//
+//    delete[]factors;
+//
+//    numOfFactors = 0;
+//    factors = numberPrime17.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 0);
+//    delete[]factors;
+//
+//    numOfFactors = 0;
+//    factors = numberPrimeBig.getPrimeFactors(&numOfFactors);
+//    EXPECT_EQ(numOfFactors , 2);
+//
+//    //Order is not imporant
+//    long n1 = factors[0].getNumber() , n2 = factors[1].getNumber() , temp = 0;
+//    delete[]factors;
+//
+//    if (n1 > n2)
+//    {
+//        temp = n2;
+//        n2 = n1;
+//        n1 = temp;
+//    }
+//
+//    EXPECT_EQ(n1 , 101);
+//    EXPECT_EQ(n2 , 29498690791);
+//
+//}
 
 TEST(GFNumberTest , GetIsPrime)
 {
@@ -399,6 +402,11 @@ TEST(GFNumberTest , OpEqualsGFNum) // =
     EXPECT_EQ(gfNumber1.getNumber() , 2);
     gfNumber2 = temp;
     EXPECT_EQ(gfNumber2.getNumber() , 9);
+    gfNumber1 = 3;                                    // Implicit cast
+    EXPECT_EQ(gfNumber1.getNumber() , 1);
+    EXPECT_EQ(gfNumber1.getField() , GField(2, 1));
+
+
 }
 
 TEST(GFNumberTest , Op_P_GFNum) // + GFNumber
@@ -666,7 +674,7 @@ TEST(GFNumberTest , OP_Comp_NE)
     GFNumber b(8 , GField(11 , 3));
     GFNumber c(a);
     GFNumber d;
-    GFNumber e(8, GField(10, 2));
+    GFNumber e(8, GField(7, 2));
 
     EXPECT_EQ(a != b , false);//No need to have equal fields
     EXPECT_EQ(a != c , false);

@@ -22,7 +22,7 @@ public:
 	GFNumber() : GFNumber(0, GField())
 	{}
 
-	explicit GFNumber(long n) : GFNumber(n, GField())
+	GFNumber(long n) : GFNumber(n, GField())
 	{}
 
 	GFNumber(const GFNumber &other): GFNumber(other._n, other._gField) {}
@@ -58,7 +58,7 @@ public:
 
 	GFNumber &operator%=(const GFNumber &other);
 
-	GFNumber &operator=(long other);
+//	GFNumber &operator=(long other);
 
 	GFNumber operator+(long other) const;
 

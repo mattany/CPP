@@ -173,12 +173,6 @@ GFNumber &GFNumber::operator%=(const GFNumber &other)
     return *this;
 }
 
-GFNumber &GFNumber::operator=(long n)
-{
-    _n = modulo(n);
-    return *this;
-}
-
 GFNumber GFNumber::operator+(long n) const
 { return GFNumber(modulo(_n + n), _gField); }
 
