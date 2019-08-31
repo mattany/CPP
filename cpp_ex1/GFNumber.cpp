@@ -7,7 +7,7 @@
 #include <random>
 #include <cmath>
 
-GFNumber * GFNumber::getPrimeFactors(size_t size) const //todo
+GFNumber * GFNumber::getPrimeFactors(size_t &size) const //todo
 {
     long n = _n;
     long* temp = new long[size]();
@@ -33,17 +33,22 @@ bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
     	number /= 2;
     	append(2, factors, size);
     }
-    GFNumber x(rng(number),_gField), y, p(1, _gField), n(number, _gField);
+    GFNumber x(rng(number),_gField), y = x, p(1, _gField), n(number, _gField);
     while (p.getNumber() == 1)
     {
         x = f(x);
-        y = f(x);
+        y = f(f(y));
         p = _gField.gcd(GFNumber(labs(x._n-y._n), _gField), n);
     }
     if (p != n)
     {
-        append(p._n, factors, size);
-        return true;
+        if (GField::isPrime(p._n))
+        {
+            append(p._n, factors, size);
+            return true;
+        }
+        naiveSearch(p._n, factors, size);
+        number /= p._n;
     }
     return false;
 }
@@ -77,7 +82,6 @@ void GFNumber::append(long val, long *&array, size_t &size) const
     std::copy(array, array + size, ret);
     delete[] array;
     array = ret;
-    assert(array[newSize - 1] == 0);   //TODO delete
     array[newSize - 1] = val;
     size = newSize;
 }
@@ -99,9 +103,9 @@ void GFNumber::printFactors() const
 	std::cout << "=";
     for (size_t i = 0; i < size - 1; i++)
     {
-        std::cout << factors[i] << "*";
+        std::cout << factors[i]._n << "*";
     }
-    std::cout << factors[size - 1];
+    std::cout << factors[size - 1]._n;
     if (size == 1)
     {
 	    std::cout << "*" << "1";
@@ -203,22 +207,24 @@ GFNumber &GFNumber::operator*=(long n)
 }
 
 GFNumber GFNumber::operator%(long n) const
-{ return GFNumber(modulo(_n % n), _gField); }
+{
+    return GFNumber(modulo(_n % modulo(n)), _gField);
+}
 
 GFNumber &GFNumber::operator%=(long n)
 {
-    _n = modulo(_n % n);
+    _n = modulo(_n % modulo(n));
     return *this;
 }
 
 bool GFNumber::operator==(const GFNumber &other) const
 {
-    return (_n == other._n && _gField == other._gField);
+    return (_n == other._n && _gField.getChar() == other._gField.getChar());
 }
 
 bool GFNumber::operator!=(const GFNumber &other) const
 {
-    return (_n != other._n || _gField != other._gField);
+    return !(*this==(other));
 }
 
 bool GFNumber::operator<=(const GFNumber &other) const
@@ -246,6 +252,18 @@ std::istream &operator>>(std::istream &in, GFNumber &gfNumber)
     gfNumber._gField = gField;
     gfNumber._n = gfNumber.modulo(n);
 	return in;
+}
+
+bool GFNumber::operator>(const GFNumber &other) const
+{
+    assert(_gField == other._gField);
+    return (_n > other._n);
+}
+
+bool GFNumber::operator<(const GFNumber &other) const
+{
+    assert(_gField == other._gField);
+    return (_n < other._n);
 }
 
 

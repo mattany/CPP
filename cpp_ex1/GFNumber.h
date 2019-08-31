@@ -84,6 +84,10 @@ public:
 
 	bool operator>=(const GFNumber &other) const;
 
+    bool operator>(const GFNumber &other) const;
+
+    bool operator<(const GFNumber &other) const;
+
 	friend std::ostream &operator<<(std::ostream& out, const GFNumber& gfNumber);
 
 	friend std::istream &operator>>(std::istream& in, GFNumber& gfNumber);

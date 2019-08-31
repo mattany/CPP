@@ -10,6 +10,7 @@
 
 bool GField::isPrime(long p)
 {
+    p = std::labs(p);
     if (p < 2) return false;
 	double root = sqrt(p);
 	for (long i = 2; i <= root; i++)
