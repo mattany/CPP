@@ -10,7 +10,12 @@
 /*****************************************************************************************
                                         Getters
 ******************************************************************************************/
-GFNumber * GFNumber::getPrimeFactors(size_t &size) const //todo
+
+/**
+     * @param size reference to size of array
+     * @return array of factors
+     */
+GFNumber * GFNumber::getPrimeFactors(size_t &size) const
 {
     long n = _n;
     long* temp = new long[size]();
@@ -28,6 +33,9 @@ GFNumber * GFNumber::getPrimeFactors(size_t &size) const //todo
     return factors;
 }
 
+/**
+     * print formatted factors
+     */
 void GFNumber::printFactors() const
 {
     size_t size = 0;
@@ -50,19 +58,21 @@ void GFNumber::printFactors() const
 /*****************************************************************************************
                                        operators
 ******************************************************************************************/
-GFNumber &GFNumber::operator=(const GFNumber &other)
-{
-    _n = other._n;
-    _gField = other._gField;
-    return *this;
-}
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator+(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return GFNumber(modulo(_n + other._n), _gField);
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator+=(const GFNumber &other)
 {
     assert(_gField == other._gField);
@@ -70,12 +80,20 @@ GFNumber &GFNumber::operator+=(const GFNumber &other)
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator-(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return GFNumber(modulo(_n - other._n), _gField);
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator-=(const GFNumber &other)
 {
     assert(_gField == other._gField);
@@ -83,12 +101,20 @@ GFNumber &GFNumber::operator-=(const GFNumber &other)
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator*(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return GFNumber(modulo(_n * other._n), _gField);
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator*=(const GFNumber &other)
 {
     assert(_gField == other._gField);
@@ -96,12 +122,20 @@ GFNumber &GFNumber::operator*=(const GFNumber &other)
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator%(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return GFNumber(_n % other._n, _gField);
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator%=(const GFNumber &other)
 {
     assert(_gField == other._gField);
@@ -109,72 +143,130 @@ GFNumber &GFNumber::operator%=(const GFNumber &other)
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator+(long n) const
 { return GFNumber(modulo(_n + n), _gField); }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator+=(long n)
 {
     _n = modulo(_n + n);
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator-(long n) const
 { return GFNumber(modulo(_n - n), _gField); }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator-=(long n)
 {
     _n = modulo(_n - n);
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator*(long n) const
 { return GFNumber(modulo(_n * n), _gField); }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator*=(long n)
 {
     _n = modulo(_n * n);
     return *this;
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber GFNumber::operator%(long n) const
 {
     return GFNumber(modulo(_n % modulo(n)), _gField);
 }
 
+/**
+ * @param other
+ * @return result
+ */
 GFNumber &GFNumber::operator%=(long n)
 {
     _n = modulo(_n % modulo(n));
     return *this;
 }
 
+/**
+ * @param other
+ * @return true iff this == other
+ */
 bool GFNumber::operator==(const GFNumber &other) const
 {
     return (_n == other._n && _gField.getOrder() == other._gField.getOrder());
 }
 
+/**
+ * @param other
+ * @return true iff this != other
+ */
 bool GFNumber::operator!=(const GFNumber &other) const
 {
     return !(*this==(other));
 }
 
+/**
+ * @param other
+ * @return true iff this <= other
+ */
 bool GFNumber::operator<=(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return (_n <= other._n);
 }
 
+/**
+ * @param other
+ * @return true iff this >= other
+ */
 bool GFNumber::operator>=(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return (_n >= other._n);
 }
 
+/**
+ * @param out output stream
+ * @param gfNumber
+ * @return reference to output stream after printing gfNumber
+ */
 std::ostream &operator<<(std::ostream &out, const GFNumber &gfNumber)
 {
 	out << gfNumber._n << " " << gfNumber._gField;
 	return out;
 }
 
+/**
+ * @param in input stream
+ * @param gfNumber
+ * @return reference to input stream after assigning values to gfNumber
+ */
 std::istream &operator>>(std::istream &in, GFNumber &gfNumber)
 {
 	long n; GField gField;
@@ -184,12 +276,20 @@ std::istream &operator>>(std::istream &in, GFNumber &gfNumber)
 	return in;
 }
 
+/**
+ * @param other
+ * @return true iff this > other
+ */
 bool GFNumber::operator>(const GFNumber &other) const
 {
     assert(_gField == other._gField);
     return (_n > other._n);
 }
 
+/**
+ * @param other
+ * @return true iff this < other
+ */
 bool GFNumber::operator<(const GFNumber &other) const
 {
     assert(_gField == other._gField);
@@ -200,6 +300,10 @@ bool GFNumber::operator<(const GFNumber &other) const
                                      private methods
 ******************************************************************************************/
 
+/**
+ * @param n
+ * @return random number between 1 and n-1
+ */
 long GFNumber::rng(long n) const
 {
     std::random_device dev;
@@ -209,6 +313,12 @@ long GFNumber::rng(long n) const
     return distribution(rng);
 }
 
+/**
+ * appends the value to the array.
+ * @param val value to add
+ * @param array reference to an array
+ * @param size old size of array
+ */
 void GFNumber::append(long val, long *&array, size_t &size) const
 {
     size_t newSize = size + 1;
@@ -221,6 +331,12 @@ void GFNumber::append(long val, long *&array, size_t &size) const
     size = newSize;
 }
 
+/**
+ * @param number
+ * @param factors array
+ * @param size of array
+ * @return true iff succeeded in finding factors.
+ */
 bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
 {
     halve(number, factors, size);
@@ -239,12 +355,18 @@ bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
             append(p._n, factors, size);
             return true;
         }
-        naiveSearch(p._n, factors, size);
+        naiveSearch(p._n, factors, size);   //Else do brute force on the factor
         number /= p._n;
     }
     return false;
 }
 
+/**
+ * put the prime factors comprising n in factors array
+ * @param n number
+ * @param factors array
+ * @param size of array
+ */
 void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
 {
     long i = 2;
@@ -270,6 +392,12 @@ void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
     }
 }
 
+/**
+ * divide by 2 and append factors array while even
+ * @param number number
+ * @param factors array
+ * @param size of array
+ */
 void GFNumber::halve(long &number, long *&factors, size_t &size) const
 {
     while (number % 2 == 0)

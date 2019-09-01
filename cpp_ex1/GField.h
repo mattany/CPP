@@ -50,12 +50,25 @@ public:
                                         Getters
 ******************************************************************************************/
 
+    /**
+     * @return Field Characteristic
+     */
 	inline long getChar() const { return _p; }
 
+	/**
+	 * @return Field Degree
+	 */
     inline long getDegree() const { return _l; }
 
+    /**
+     * @return Field Order
+     */
 	long getOrder() const;
 
+    /**
+     * @param p
+     * @return True iff p is prime
+     */
 	static bool isPrime(long p);
 
 /*****************************************************************************************
@@ -79,14 +92,36 @@ public:
                                        operators
 ******************************************************************************************/
 
-	GField & operator=(const GField &other);
+    /**
+     * @param other
+     * @return reference to a copy of other
+     */
+	GField & operator=(const GField &other) = default;
 
+	/**
+	 * @param other
+	 * @return true iff the fields are equal
+	 */
 	bool operator==(const GField &other) const {return getOrder() == other.getOrder();}
 
+	/**
+	 * @param other
+	 * @return true iff the fields are different
+	 */
 	bool operator!=(const GField &other) const {return getOrder() != other.getOrder();}
 
+    /**
+     * @param out output stream
+     * @param gField
+     * @return reference to output stream after printing gField
+     */
 	friend std::ostream& operator<<(std::ostream& out, const GField& gField);
 
+	/**
+	 * @param in input stream
+	 * @param gField
+	 * @return reference to input stream after updating gField
+	 */
 	friend std::istream& operator>>(std::istream& in, GField& gField);
 
 private:

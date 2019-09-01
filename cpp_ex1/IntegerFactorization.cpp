@@ -4,7 +4,7 @@
 #include "GField.h"
 
 
-int main()
+int main2()
 {
 	GFNumber a, b;
 

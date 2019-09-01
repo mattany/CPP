@@ -73,13 +73,6 @@ GFNumber GField::createNumber(long k) const
                                        operators
 ******************************************************************************************/
 
-GField &GField::operator=(const GField &other)
-{
-    _p = other._p;
-    _l = other._l;
-    return *this;
-}
-
 std::ostream &operator<<(std::ostream &out, const GField &gField)
 {
     out << "GF(" << gField._p << "**" << gField._l << ")";
