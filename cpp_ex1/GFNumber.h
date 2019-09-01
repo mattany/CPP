@@ -8,6 +8,9 @@
 #include <string>
 #include "GField.h"
 
+/**
+ * The GFNumber class which includes a number and a field containing that number.
+ */
 class GFNumber
 {
 public:
@@ -21,7 +24,7 @@ public:
      */
     GFNumber(long n, const GField &gField) : _gField(gField)
     {
-        _n = modulo(n);
+        _n = _modulo(n);
     }
 
     /**
@@ -70,7 +73,7 @@ public:
      * @param size reference to size of array
      * @return array of factors
      */
-    GFNumber *getPrimeFactors(size_t &size) const;
+    GFNumber *getPrimeFactors(int *size) const;
 
     /**
      * print formatted factors
@@ -91,7 +94,7 @@ public:
      * @param other
      * @return a reference to a copy of other
      */
-    GFNumber &operator=(const GFNumber &other)= default;
+    GFNumber &operator=(const GFNumber &other) = default;
 
     /**
      * @param other
@@ -255,13 +258,13 @@ private:
      * @param n
      * @return random number between 1 and n-1
      */
-    long rng(long n) const;
+    long _rng(long n) const;
 
     /**
      * @param n
      * @return result of x^2 + 1 as GFNumber (to prevent overflow)
      */
-    inline GFNumber f(const GFNumber &n) const
+    inline GFNumber _f(const GFNumber &n) const
     { return GFNumber(n._n * n._n + 1, n._gField); }
 
     /**
@@ -270,13 +273,13 @@ private:
      * @param array reference to an array
      * @param size old size of array
      */
-    void append(long val, long *&array, size_t &size) const;
+    void _append(long val, long *&array, int *size) const;
 
     /**
      * @param n
      * @return modulized value according to the field.
      */
-    long modulo(long n) const
+    long _modulo(long n) const
     { return (n >= 0) ? (n % _gField.getOrder()) : (n % _gField.getOrder() + _gField.getOrder()); }
 
     /**
@@ -285,7 +288,7 @@ private:
      * @param size of array
      * @return true iff succeeded in finding factors.
      */
-    bool pollardRho(long &number, long *(&factors), size_t &size) const;
+    bool _pollardRho(long &number, long *(&factors), int *size) const;
 
     /**
      * put the prime factors comprising n in factors array
@@ -293,7 +296,7 @@ private:
      * @param factors array
      * @param size of array
      */
-    void naiveSearch(long n, long *(&factors), size_t &size) const;
+    void _naiveSearch(long n, long *(&factors), int *size) const;
 
     /**
      * divide by 2 and append factors array while even
@@ -301,7 +304,7 @@ private:
      * @param factors array
      * @param size of array
      */
-    void halve(long &number, long *&factors, size_t &size) const;
+    void _halve(long &number, long *&factors, int *size) const;
 };
 
 

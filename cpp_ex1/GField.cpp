@@ -32,7 +32,10 @@ long GField::getOrder() const
 bool GField::isPrime(long p)
 {
     p = std::labs(p);
-    if (p < 2) return false;
+    if (p < 2)
+    {
+        return false;
+    }
     long root = floor(sqrt((double) p));
     for (long i = 2; i <= root; i++)
     {
@@ -73,12 +76,22 @@ GFNumber GField::createNumber(long k) const
                                        operators
 ******************************************************************************************/
 
+/**
+ * @param out output stream
+ * @param gField
+ * @return reference to output stream after printing gField
+ */
 std::ostream &operator<<(std::ostream &out, const GField &gField)
 {
     out << "GF(" << gField._p << "**" << gField._l << ")";
     return out;
 }
 
+/**
+ * @param in input stream
+ * @param gField
+ * @return reference to input stream after updating gField
+ */
 std::istream &operator>>(std::istream &in, GField &gField)
 {
     long p, l;

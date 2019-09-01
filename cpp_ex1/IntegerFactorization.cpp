@@ -3,10 +3,12 @@
 #include "GFNumber.h"
 #include "GField.h"
 
-
-int main2()
+/**
+ * the main function
+ */
+int main()
 {
-	GFNumber a, b;
+    GFNumber a, b;
 
     std::cin >> a >> b;
     std::cin.fail();
@@ -16,6 +18,6 @@ int main2()
     std::cout << b * a << std::endl;
     a.printFactors();
     b.printFactors();
-	return 0;
+    return 0;
 }
 
