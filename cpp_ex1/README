@@ -1,0 +1,15 @@
+cpp_ex1
+mattan
+31229258
+######
+
+In the following exercise we were required to write a program to find the prime factors composing
+numbers. RSA encryption uses the reverse principle to generate very big numbers that are impossible
+to factor on today's computers.
+
+The program IntegerFactorization uses the GField and GFNumber classes to achieve this feat.
+
+In the RhoPollard algorithm implementation, I chose to resolve the issue of non prime return values
+by calling the brute force algorithm on the return value, rather than calling RhoPollard recursively
+on it. This is since it seemed more efficient since if a the number is non prime I noticed it would
+usually be very small.

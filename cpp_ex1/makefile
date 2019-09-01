@@ -1,0 +1,1 @@
+    g++ -Wall -g -std=c++14 IntegerFactorization.cpp GField.h GField.cpp GFNumber.h GFNumber.cpp -o IntegerFactorization

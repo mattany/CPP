@@ -17,6 +17,6 @@ include_directories(lib/googletest-master/googlemock/include)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(SOURCE_FILES ex1_cpp_tester.cpp)
 
-add_executable(cpp_ex1 GField.cpp GFNumber.cpp IntegerFactorization.cpp ex1_cpp_tester_v1.1.cpp)
+add_executable(cpp_ex1 GField.cpp GFNumber.cpp IntegerFactorization.cpp ex1_cpp_tester_v1.1.cpp "Random input tests.cpp")
 
 target_link_libraries(cpp_ex1 gtest gtest_main)

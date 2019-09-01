@@ -7,6 +7,9 @@
 #include <random>
 #include <cmath>
 
+/*****************************************************************************************
+                                        Getters
+******************************************************************************************/
 GFNumber * GFNumber::getPrimeFactors(size_t &size) const //todo
 {
     long n = _n;
@@ -17,82 +20,12 @@ GFNumber * GFNumber::getPrimeFactors(size_t &size) const //todo
     }
     naiveSearch(n, temp, size);
     auto* factors = new GFNumber[size];
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
         factors[i] = GFNumber(temp[i], _gField);
     }
     delete[] temp;
     return factors;
-}
-
-bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
-{
-    if (number == 1) return false;
-    while (number % 2 == 0)
-    {
-    	number /= 2;
-    	append(2, factors, size);
-    }
-    GFNumber x(rng(number),_gField), y = x, p(1, _gField), n(number, _gField);
-    while (p.getNumber() == 1)
-    {
-        x = f(x);
-        y = f(f(y));
-        p = _gField.gcd(GFNumber(labs(x._n-y._n), _gField), n);
-    }
-    if (p != n)
-    {
-        if (GField::isPrime(p._n))
-        {
-            append(p._n, factors, size);
-            return true;
-        }
-        naiveSearch(p._n, factors, size);
-        number /= p._n;
-    }
-    return false;
-}
-
-void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
-{
-    long i = 2;
-    while (i < sqrt(n))
-    {
-        if (n % i == 0)
-        {
-            append(i, factors, size);
-            n /= i;
-        }
-        else
-        {
-            i += 1;
-        }
-    }
-    if (n > 1)
-    {
-        append(n, factors, size);
-    }
-}
-
-void GFNumber::append(long val, long *&array, size_t &size) const
-{
-    size_t newSize = size + 1;
-    long * ret = new long[newSize]();
-
-    std::copy(array, array + size, ret);
-    delete[] array;
-    array = ret;
-    array[newSize - 1] = val;
-    size = newSize;
-}
-
-long GFNumber::rng(long n) const
-{
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> distribution(1,n - 1);
-
-    return distribution(rng);
 }
 
 void GFNumber::printFactors() const
@@ -114,6 +47,9 @@ void GFNumber::printFactors() const
     delete[] factors;
 }
 
+/*****************************************************************************************
+                                       operators
+******************************************************************************************/
 GFNumber &GFNumber::operator=(const GFNumber &other)
 {
     _n = other._n;
@@ -213,7 +149,7 @@ GFNumber &GFNumber::operator%=(long n)
 
 bool GFNumber::operator==(const GFNumber &other) const
 {
-    return (_n == other._n && _gField.getChar() == other._gField.getChar());
+    return (_n == other._n && _gField.getOrder() == other._gField.getOrder());
 }
 
 bool GFNumber::operator!=(const GFNumber &other) const
@@ -260,5 +196,86 @@ bool GFNumber::operator<(const GFNumber &other) const
     return (_n < other._n);
 }
 
+/*****************************************************************************************
+                                     private methods
+******************************************************************************************/
 
+long GFNumber::rng(long n) const
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> distribution(1,n - 1);
+
+    return distribution(rng);
+}
+
+void GFNumber::append(long val, long *&array, size_t &size) const
+{
+    size_t newSize = size + 1;
+    long * ret = new long[newSize]();
+
+    std::copy(array, array + size, ret);
+    delete[] array;
+    array = ret;
+    array[newSize - 1] = val;
+    size = newSize;
+}
+
+bool GFNumber::pollardRho(long& number, long* (&factors), size_t & size) const
+{
+    halve(number, factors, size);
+    if (number == 1) return false;
+    GFNumber x(rng(number),_gField), y = x, p(1, _gField), n(number, _gField);
+    while (p.getNumber() == 1)
+    {
+        x = f(x);
+        y = f(f(y));
+        p = _gField.gcd(GFNumber(labs(x._n-y._n), _gField), n);
+    }
+    if (p != n)
+    {
+        if (GField::isPrime(p._n))
+        {
+            append(p._n, factors, size);
+            return true;
+        }
+        naiveSearch(p._n, factors, size);
+        number /= p._n;
+    }
+    return false;
+}
+
+void GFNumber::naiveSearch(long n, long* (&factors), size_t & size) const
+{
+    long i = 2;
+    if (n == 1)
+    {
+        append(n, factors, size);
+        return;
+    }
+    long root = floor(sqrt((double)n));
+    while (i <= root)
+    {
+        if (n % i == 0)
+        {
+            append(i, factors, size);
+            n /= i;
+        }
+        else i += 1;
+
+    }
+    if (n > 1)
+    {
+        append(n, factors, size);
+    }
+}
+
+void GFNumber::halve(long &number, long *&factors, size_t &size) const
+{
+    while (number % 2 == 0)
+    {
+        number /= 2;
+        append(2, factors, size);
+    }
+}
 
