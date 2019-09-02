@@ -65,8 +65,7 @@ void GFNumber::printFactors() const
     if (size > 0)
     {
         std::cout << factors[size - 1]._n;
-    } else
-    {
+    } else {
         std::cout << _n << "*" << "1";
     }
     std::cout << std::endl;
@@ -399,8 +398,9 @@ void GFNumber::_naiveSearch(long n, long *(&factors), int *size) const
         {
             _append(i, factors, size);
             n /= i;
-        } else i += 1;
-
+        } else {
+            i += 1;
+        }
     }
     if (n > 1)
     {
