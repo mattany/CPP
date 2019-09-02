@@ -19,7 +19,7 @@ GFNumber *GFNumber::getPrimeFactors(int *size) const
 {
     *size = 0;
     long n = _n;
-    if (_n == 0 || _n == 1)
+    if (_n == 0 || _n == 1 || _n == 2)   // Should not enter this if called from PrintFactors
     {
         return new GFNumber[*size];
     }
