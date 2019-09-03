@@ -65,7 +65,8 @@ void GFNumber::printFactors() const
     if (size > 0)
     {
         std::cout << factors[size - 1]._n;
-    } else
+    }
+    else
     {
         std::cout << _n << "*" << "1";
     }

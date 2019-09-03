@@ -1,7 +1,6 @@
 #include <iostream>
-#include <cassert>
 #include "GFNumber.h"
-#include "GField.h"
+
 
 /**
  * the main function
