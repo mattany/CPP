@@ -58,6 +58,7 @@ bool GField::isPrime(long p)
  */
 GFNumber GField::gcd(const GFNumber &num1, const GFNumber &num2) const
 {
+    assert(num1 != 0 || num2 != 0);
     assert(num1.getField() == num2.getField());
     assert(*this == num2.getField());
     long a = num1.getNumber(), b = num2.getNumber();
@@ -96,6 +97,7 @@ std::istream &operator>>(std::istream &in, GField &gField)
 {
     long p, l;
     in >> p >> l;
+    assert(!in.fail());
     assert(GField::isPrime(p) && l > 0);
     gField._p = p;
     gField._l = l;

@@ -65,7 +65,8 @@ void GFNumber::printFactors() const
     if (size > 0)
     {
         std::cout << factors[size - 1]._n;
-    } else {
+    } else
+    {
         std::cout << _n << "*" << "1";
     }
     std::cout << std::endl;
@@ -291,6 +292,7 @@ std::istream &operator>>(std::istream &in, GFNumber &gfNumber)
     long n;
     GField gField;
     in >> n >> gField;
+    assert(!in.fail());
     gfNumber._gField = gField;
     gfNumber._n = gfNumber._modulo(n);
     return in;
@@ -398,7 +400,9 @@ void GFNumber::_naiveSearch(long n, long *(&factors), int *size) const
         {
             _append(i, factors, size);
             n /= i;
-        } else {
+        }
+        else
+        {
             i += 1;
         }
     }
