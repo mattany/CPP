@@ -394,7 +394,7 @@ bool GFNumber::_pollardRho(long &number, long *(&factors), int *size) const
 void GFNumber::_naiveSearch(long n, long *(&factors), int *size) const
 {
     long i = 2;
-    long root = floor(sqrt((double) n));
+    long root = (long) sqrt((double) n);
     while (i <= root)
     {
         if (n % i == 0)

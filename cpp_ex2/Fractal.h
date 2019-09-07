@@ -20,7 +20,7 @@ public:
             _dim(dimension), _height(height), _width(width)
     {}
 
-    void print()
+    void print() const
     {
         for (const vector<bool> &row : _matrix)
         {
