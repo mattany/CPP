@@ -9,19 +9,18 @@
 /**
  * @return exit failure
  */
-int usage_error()
+void usageError()
 {
     std::cerr << USAGE << std::endl;
-    exit(EXIT_FAILURE);
 }
 
 /**
  * @return exit failure
  */
-int input_error()
+void inputError()
 {
     std::cerr << INPUT << std::endl;
-    exit(EXIT_FAILURE);
+
 }
 
 /**
@@ -45,28 +44,32 @@ bool goodInput(const std::string &line)
  * @param argv arguments
  * @param data pairs of (type, dimension)
  */
-void parseFile(int argc, char *const *argv, std::stack<std::pair<int, int>> &data)
+bool parseFile(int argc, char *const *argv, std::stack<std::pair<int, int>> &data)
 {
     if (argc != 2)
     {
-        usage_error();
+	    usageError();
+	    return false;
     }
     std::ifstream infile;
     infile.open(argv[1]);
     if (!infile)
     {
-        input_error();
+	    inputError();
+	    return false;
     }
     std::string line;
     while (getline(infile, line))
     {
         if (!goodInput(line))
         {
-            input_error();
+	        inputError();
+	        return false;
         }
         data.push(std::make_pair(line[0] - '0', line[2] - '0'));
     }
     infile.clear();
+    return true;
 }
 
 /**
@@ -116,7 +119,10 @@ void printFractals(std::stack<std::pair<int, int>> &data)
 int main(int argc, char **argv)
 {
     std::stack<std::pair<int, int>> data;
-    parseFile(argc, argv, data);
+    if (!parseFile(argc, argv, data))
+    {
+    	return EXIT_FAILURE;
+    }
     printFractals(data);
     return 0;
 }
