@@ -27,7 +27,7 @@ void Fractal::setMatrix()
 	int rows = (int) pow(_height, _dim);
 	int cols = (int) pow(_width, _dim);
 	_matrix.resize(rows, vector<bool>(cols, false));
-	populateMatrix(_dim, 0, 0, _matrix);
+	populateMatrix(_dim, FIRST_ROW, FIRST_COL, _matrix);
 }
 
 /**

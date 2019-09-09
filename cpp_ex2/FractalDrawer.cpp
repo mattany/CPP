@@ -3,8 +3,20 @@
 #include <regex>
 #include "Fractal.h"
 
-#define INPUT "Invalid input"
-#define USAGE "Usage: FractalDrawer <file path>"
+enum FractalTypes {CARPET = 1, SIEVE, CANTOR};
+static const int FRACTAL_TYPE = 0;
+static const int FRACTAL_DIMENSION = 2;
+static const int MAX_FRACTAL_DIMENSION = 6;
+static const int MAX_FRACTAL_TYPE = 3;
+static const int MAX_LINE_LENGTH = 3;
+static const int DELIMITER = 1;
+static const int MIN_FRACTAL_TYPE = 1;
+static const int MIN_FRACTAL_DIMENSION = 1;
+static const int CORRECT_ARG_NUMBER = 2;
+static const int FILE_PATH = 1;
+static const int FRACTAL_DIM = 1;
+static const char* INPUT = "Invalid input";
+static const char* USAGE = "Usage: FractalDrawer <file path>";
 
 /**
  * @return exit failure
@@ -29,14 +41,14 @@ void inputError()
  */
 bool goodInput(const std::string &line)
 {
-    return (line.length() == 3 &&
-            line[1] == ',' &&
-            isdigit(line[0]) &&
-            isdigit(line[2]) &&
-            0 < (line[0]) - '0' &&
-            line[0] - '0' < 4 &&
-            0 < line[2] - '0' &&
-            line[2] - '0' < 7);
+    return (line.length() == MAX_LINE_LENGTH &&
+            line[DELIMITER] == ',' &&
+            isdigit(line[FRACTAL_TYPE]) &&
+            isdigit(line[FRACTAL_DIMENSION]) &&
+            MIN_FRACTAL_TYPE <= (line[FRACTAL_TYPE]) - '0' &&
+            line[FRACTAL_TYPE] - '0' <= MAX_FRACTAL_TYPE &&
+            MIN_FRACTAL_DIMENSION <= line[FRACTAL_DIMENSION] - '0' &&
+            line[FRACTAL_DIMENSION] - '0' <= MAX_FRACTAL_DIMENSION);
 }
 
 /**
@@ -46,13 +58,13 @@ bool goodInput(const std::string &line)
  */
 bool parseFile(int argc, char *const *argv, std::stack<std::pair<int, int>> &data)
 {
-    if (argc != 2)
+    if (argc != CORRECT_ARG_NUMBER)
     {
 	    usageError();
 	    return false;
     }
     std::ifstream infile;
-    infile.open(argv[1]);
+    infile.open(argv[FILE_PATH]);
     if (!infile)
     {
 	    inputError();
@@ -66,7 +78,7 @@ bool parseFile(int argc, char *const *argv, std::stack<std::pair<int, int>> &dat
 	        inputError();
 	        return false;
         }
-        data.push(std::make_pair(line[0] - '0', line[2] - '0'));
+        data.push(std::make_pair(line[FRACTAL_TYPE] - '0', line[FRACTAL_DIMENSION] - '0'));
     }
     infile.clear();
     return true;
@@ -77,27 +89,27 @@ bool parseFile(int argc, char *const *argv, std::stack<std::pair<int, int>> &dat
  */
 void printFractals(std::stack<std::pair<int, int>> &data)
 {
-
-    int type, dim;
+    
+	int type, dim;
     while (!data.empty())
     {
-        type = std::get<0>(data.top());
-        dim = std::get<1>(data.top());
+        type = std::get<FRACTAL_TYPE>(data.top());
+        dim = std::get<FRACTAL_DIM>(data.top());
         switch (type)
         {
-            case 1:
+            case CARPET:
             {
                 auto carpet = Carpet(dim);
                 carpet.print();
                 break;
             }
-            case 2:
+            case SIEVE:
             {
                 auto sieve = Sieve(dim);
                 sieve.print();
                 break;
             }
-            case 3:
+            case CANTOR:
             {
                 auto cantor = Cantor(dim);
                 cantor.print();

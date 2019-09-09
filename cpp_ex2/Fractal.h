@@ -6,6 +6,9 @@
 #ifndef CPP_EX2_FRACTAL_H
 #define CPP_EX2_FRACTAL_H
 
+static const int FIRST_ROW = 0;
+static const int FIRST_COL = 0;
+
 #include <vector>
 #include <cassert>
 #include <cmath>
