@@ -44,6 +44,14 @@ TEST(HashMapTest, copyCtor)
 	EXPECT_EQ(hashMap.empty(), true);
 }
 
+TEST(HashMapTest, insert)
+{
+	HashMap<double,std::string> hashMap;
+	hashMap.insert(6, "a");
+	hashMap.insert(5, "b");
+
+}
+
 
 
 

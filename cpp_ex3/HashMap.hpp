@@ -17,9 +17,18 @@ template<typename KeyT, typename ValueT> class HashMap
 public:
 	HashMap(): HashMap(DEFAULT_MIN_LOAD_FACTOR, DEFAULT_MAX_LOAD_FACTOR) {}
 
-	HashMap(std::vector<KeyT> keys, std::vector<ValueT> values)
+	HashMap(std::vector<KeyT> keys, std::vector<ValueT> values):
+	_minLoadFactor(DEFAULT_MIN_LOAD_FACTOR), _maxLoadFactor(DEFAULT_MAX_LOAD_FACTOR),
+	_size(keys.size()), _capacity((size_t) pow(2,ceil(log(_size))))
 	{
 		assert(keys.size() == values.size());
+		size_t size = keys.size();
+		_capacity =;
+		while ((double) size / (double) capacity < )
+		for (int i = 0; i < keys.size(); i++)
+		{
+
+		}
 	}
 
 	HashMap(const HashMap<KeyT, ValueT>& other);
@@ -50,18 +59,42 @@ public:
 
 	bool containsKey(KeyT key) const
 	{
-		size_t index = getHash(key);
-		return _data[index].contains(key);
+		size_t bucketIndex = getHash(key);
+		return bucketContainsKey(key, bucketIndex);
 	}
 
 	bool insert(KeyT key, ValueT value)
 	{
-		size_t index = getHash(key);
-		if (!_data[index].contains(key))
+		size_t bucketIndex = getHash(key);
+		bool contained = bucketContainsKey(key, bucketIndex);
+		if (!contained)
 		{
 			++_size;
-
+			_data[bucketIndex].emplace_back(key, value);
+			refreshMap();
+			return true;
 		}
+		return false;
+	}
+
+	bool bucketContainsKey(KeyT key, size_t index) const
+	{
+		return any_of(_data[index].begin(), _data[index].end(),
+		              [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+	}
+
+	bool erase(KeyT key)
+	{
+		size_t index = getHash(key);
+		auto it = std::find_if(_data[index].begin(), _data[index].end(),
+				[&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+		if (it != _data[index].end())
+		{
+			--_size;
+			_data[index].erase(it);
+			refreshMap();
+		}
+		return false;
 	}
 private:
 	size_t _capacity, _size;
@@ -77,30 +110,29 @@ private:
 	void updateContainer()
 	{
 
-		container updated(_capacity);
+		container temp(_capacity);
 		for (auto bucket : _data)
 		{
 			for (auto pair : bucket)
 			{
 				size_t index = getHash(pair.first());
-				updated[index].push_back(pair);
+				temp[index].push_back(pair);
 			}
 		}
-		_data = updated;
+		_data = temp;
 	}
 
-	void remap()
+	void refreshMap()
 	{
-		switch (getLoadFactor()):
-
-		case
-		if ( < _minLoadFactor)
+		if (getLoadFactor() < _minLoadFactor)
 		{
 			_capacity /= 2;
+			return updateContainer();
 		}
 		if (getLoadFactor() > _maxLoadFactor)
 		{
 			_capacity *= 2;
+			return updateContainer();
 		}
 	}
 };
