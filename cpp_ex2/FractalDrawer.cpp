@@ -3,7 +3,12 @@
 #include <regex>
 #include "Fractal.h"
 
-enum FractalTypes {CARPET = 1, SIEVE, CANTOR};
+enum FractalTypes
+	{
+	CARPET = 1,
+	SIEVE,
+	CANTOR
+	};
 static const int FRACTAL_TYPE = 0;
 static const int FRACTAL_DIMENSION = 2;
 static const int MAX_FRACTAL_DIMENSION = 6;
