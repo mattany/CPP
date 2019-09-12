@@ -36,20 +36,38 @@ TEST(HashMapTest, minMaxFactorConstructor)
 
 TEST(HashMapTest, copyCtor)
 {
-	HashMap<double, double> hashMap(0.3,0.6);
+	HashMap<double, double> hashMap(0.3,0.7);
+	for (int i = 0; i < 100; ++i)
+    {
+	    hashMap.insert(i,i/2);
+    }
 	HashMap<double, double> hashMap1(hashMap);
 	EXPECT_EQ(hashMap.size() , hashMap1.size());
 	EXPECT_EQ(hashMap.capacity() , hashMap1.capacity());
-	EXPECT_EQ(hashMap.getLoadFactor() , 0);
-	EXPECT_EQ(hashMap.empty(), true);
+	EXPECT_EQ(hashMap.getLoadFactor() , hashMap1.getLoadFactor() );
+	EXPECT_EQ(hashMap.empty(), hashMap1.empty());
+	hashMap.erase(99);              //check deep copy
+	EXPECT_NE(hashMap.containsKey(99), hashMap1.containsKey(99));
+    EXPECT_NE(hashMap.size() , hashMap1.size());
+
 }
 
+TEST(HashMapTest, vectorCtor)
+{
+    std::vector<std::string> keys{"aa","bb","c","d"};
+    std::vector<int> values{4, 33, 2, 5};
+    HashMap<std::string, int> h(keys, values);
+    for (int i = 0; i< 4;i++)
+    {
+        EXPECT_EQ(h.containsKey(keys[i]), true);
+        EXPECT_EQ(h.at(keys[i]),values[i]);
+    }
+}
 TEST(HashMapTest, insert)
 {
 	HashMap<double,std::string> hashMap;
 	hashMap.insert(6, "a");
 	hashMap.insert(5, "b");
-
 }
 
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-int main()
+int main2()
 {
 	std::vector<int> a{1,2,3};
 	std::vector<int> b = a;
