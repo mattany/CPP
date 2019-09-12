@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++14 -g   CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o CMakeFiles/cpp_ex3.dir/tests.cpp.o  -o cpp_ex3 lib/libgtestd.a lib/libgtest_maind.a lib/libgtestd.a -lpthread 
