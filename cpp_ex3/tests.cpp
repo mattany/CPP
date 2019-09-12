@@ -36,11 +36,11 @@ TEST(HashMapTest, minMaxFactorConstructor)
 
 TEST(HashMapTest, copyCtor)
 {
-	HashMap<double, double> hashMap(0.3,0.7);
-	for (int i = 0; i < 100; ++i)
-    {
-	    hashMap.insert(i,i/2);
-    }
+	HashMap<double, double> hashMap;
+//	for (int i = 0; i < 100; ++i)
+//    {
+    hashMap.insert(1,2);
+//    }
 	HashMap<double, double> hashMap1(hashMap);
 	EXPECT_EQ(hashMap.size() , hashMap1.size());
 	EXPECT_EQ(hashMap.capacity() , hashMap1.capacity());

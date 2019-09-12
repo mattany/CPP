@@ -42,7 +42,7 @@ public:
 		return (double) _size / (double) _capacity;
 	}
 
-	ValueT at(const KeyT& key) const
+	const ValueT& at(const KeyT& key) const
 	{
 	    size_t index = getHash(key);
         auto it = std::find_if(_data[index].begin(), _data[index].end(),
@@ -54,15 +54,30 @@ public:
         return it->second;
 	}
 
+
+
 	int bucketSize(const KeyT& key) const
     {
+	    if (!containsKey(key))
+        {
+	        throw std::exception();
+        }
 	    size_t index = getHash(key);
-        return 0;
-//	    return;
+        return _data[index];
+
     }
+
 	bool empty() const
 	{
 		return _size == 0;
+	}
+
+	void clear() const
+	{
+        delete[] _data;
+        _size = 0;
+        _data = nullptr;
+        _data = new bucket[_capacity];
 	}
 
 	bool containsKey(KeyT key) const
@@ -106,35 +121,32 @@ public:
 		}
 		return false;
 	}
+
 private:
 	size_t _capacity, _size;
 	double _minLoadFactor, _maxLoadFactor;
-	using container = std::vector<std::vector<std::pair<KeyT, ValueT> > >;
-	container _data;
+	using bucket = std::vector<std::pair<KeyT, ValueT> >;
+	bucket* _data;
 
 	size_t getHash(KeyT key) const
 	{
 		return std::hash<KeyT>{}(key) & _capacity - 1;
 	}
 
-	void updateContainer()
+	void updateContainer(bool enlarge)
 	{
-
-		container temp;
-		temp.reserve(_capacity);
-		for (auto bucket : _data)
+        size_t old_capacity = (enlarge) ? _capacity / 2 : _capacity * 2;
+		auto temp = new bucket[_capacity]();
+		for (size_t i = 0; i < old_capacity; i++)
 		{
-			for (auto pair : bucket)
+			for (auto pair : _data[i])
 			{
 				size_t index = getHash(pair.first);
 				temp[index].push_back(pair);
 			}
 		}
-        std::cout << "size after " << _data.size() << std::endl;
-        std::cout << "capacity aftrer " << _data.capacity() << std::endl;
+        delete[] _data;
         _data = temp;
-        std::cout << "size after " << _data.size()<< std::endl;
-        std::cout << "capacity aftrer " << _data.capacity() << std::endl;
 	}
 
 	void refreshMap()
@@ -143,14 +155,33 @@ private:
 		{
 
 			_capacity /= 2;
-			return updateContainer();
+			return updateContainer(false);
 		}
 		if (getLoadFactor() > _maxLoadFactor)
 		{
 			_capacity *= 2;
-			return updateContainer();
+			return updateContainer(true);
 		}
 	}
+
+	HashMap& operator=(const HashMap& other)
+    {
+        if (this != &other)
+        {
+            _capacity = other._capacity();
+            clear();
+            std::copy(other._data, other._data + other._capacity, _data);
+            _size = other._size;
+            _minLoadFactor = other._minLoadFactor;
+            _maxLoadFactor = other._maxLoadFactor;
+        }
+        return *this;
+    }
+
+    const ValueT& operator[](const KeyT& key) const noexcept
+    {
+        return _data[getHash(key)];
+    }
 };
 
 template<typename KeyT, typename ValueT>
@@ -166,9 +197,7 @@ HashMap<KeyT, ValueT>::HashMap(double minLoadFactor, double maxLoadFactor):
 		_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor)
 {
 	assert(0 <= minLoadFactor && minLoadFactor < maxLoadFactor && maxLoadFactor <= 1);
-    std::cout << "c1 " << _data.capacity() << std::endl;
-	_data.reserve(_capacity);
-	std::cout << "c2 " << _data.capacity() << std::endl;
+	_data = new bucket[_capacity];
 }
 
 template<typename KeyT, typename ValueT>
@@ -178,7 +207,7 @@ HashMap<KeyT, ValueT>::HashMap(std::vector<KeyT> keys, std::vector<ValueT> value
 {
     assert(keys.size() == values.size());
     _capacity = (size_t) pow(2,ceil(log(_size)));
-    _data.reserve(_capacity);
+    _data = new bucket[_capacity]();
     while (getLoadFactor() < _minLoadFactor || getLoadFactor() > _maxLoadFactor)
     {
         refreshMap();
