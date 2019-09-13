@@ -17,6 +17,8 @@ static const int INITIAL_SIZE = 0;
 template<typename KeyT, typename ValueT> class HashMap
 {
 public:
+    using bucket = std::vector<std::pair<KeyT, ValueT> >;
+
 	HashMap(): HashMap(DEFAULT_MIN_LOAD_FACTOR, DEFAULT_MAX_LOAD_FACTOR) {}
 
 	HashMap(std::vector<KeyT> keys, std::vector<ValueT> values);
@@ -25,7 +27,11 @@ public:
 
 	HashMap(double minLoadFactor, double maxLoadFactor);
 
-	~HashMap() = default;
+	~HashMap()
+	{
+	    delete[] _data;
+        _data = nullptr;
+	}
 
 	int size() const
 	{
@@ -39,14 +45,13 @@ public:
 
 	double getLoadFactor() const
 	{
-		return (double) _size / (double) _capacity;
+		return (double) _size / _capacity;
 	}
 
 	ValueT& at(const KeyT& key)
     {
         size_t index = getHash(key);
-        auto it = std::find_if(_data[index].begin(), _data[index].end(),
-                               [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+        auto it = getIterator(key, index);
         if (it == _data[index].end())
         {
             throw std::exception();
@@ -54,11 +59,10 @@ public:
         return it->second;
     }
 
-	const ValueT& at(const KeyT& key) const
+    const ValueT& at(const KeyT& key) const
 	{
         size_t index = getHash(key);
-        auto it = std::find_if(_data[index].begin(), _data[index].end(),
-                               [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+        auto it = getIterator(key, index);
         if (it == _data[index].end())
         {
             throw std::exception();
@@ -73,7 +77,7 @@ public:
 	        throw std::exception();
         }
 	    size_t index = getHash(key);
-        return _data[index];
+        return _data[index].size();
 
     }
 
@@ -105,7 +109,7 @@ public:
 
 			_data[bucketIndex].emplace_back(key, value);
             ++_size;
-			refreshMap();
+            refreshMap(true);
 			return true;
 		}
 		return false;
@@ -113,7 +117,9 @@ public:
 
 	bool bucketContainsKey(KeyT key, size_t index) const
 	{
-
+//        std::cout << "index: " << index << std::endl;
+//        std::cout << "capacity: " << _data[index].capacity() << std::endl;
+//        std::cout << "size: " << _data[index].size() << std::endl;
 		return any_of(_data[index].begin(), _data[index].end(),
 		              [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
 	}
@@ -127,22 +133,105 @@ public:
 		{
 			--_size;
 			_data[index].erase(it);
-			refreshMap();
+            refreshMap(false);
+            return true;
 		}
 		return false;
 	}
 
+    class iterator
+    {
+    public:
+        iterator(std::vector<bucket>* hashMap = nullptr,
+                          std::pair<KeyT,ValueT>* pointer = nullptr):
+                _pair(pointer), _hashMap(hashMap) {}
+
+        ValueT& operator*() const { return *_pair;}
+
+        ValueT*operator->() const { return _pair;}
+
+        iterator& operator++()
+        {
+            size_t index = _hashMap.getHash(_pair->first);
+            auto it = _hashMap.getIterator(_pair->first, index);
+            auto next = it + 1;
+            next = getNextElement(index, next);
+            _pair = next;
+            return *this;
+        }
+
+        void setPair(std::pair<KeyT, ValueT> *pair)
+        {
+            _pair = pair;
+        }
+
+        iterator getNextElement(size_t index, iterator next) const
+        {
+            while(index < _hashMap._capacity && next == _hashMap.getData()[index].end())
+            {
+                index++;
+                next = _hashMap.getData()[index].begin();
+            }
+            return next;
+        }
+
+        iterator operator++(int)
+        {
+            iterator tmp = *this;
+            operator++();
+            return tmp;
+        }
+
+        bool operator==(iterator const& other) const
+        {
+            return (_pair == other._pair && _hashMap == other._hashMap);
+        }
+
+        bool operator!=(iterator const& other) const
+        {
+            return (!operator==(other));
+        }
+
+    private:
+        std::pair<KeyT,ValueT>* _pair;
+        HashMap _hashMap;
+    };
+
+    const iterator begin() const noexcept
+    {
+        iterator it(this, nullptr);
+        it.setPair(it.getNextElement(0, _data[0].begin()));
+        return it;
+    }
+
+    const iterator end() const noexcept
+    {
+        return iterator(this, nullptr);
+    }
 private:
 	size_t _capacity, _size;
 	double _minLoadFactor, _maxLoadFactor;
-	using bucket = std::vector<std::pair<KeyT, ValueT> >;
+
 	bucket* _data;
 
-	size_t getHash(KeyT key) const
+	const bucket* getData() const
+    {
+        return _data;
+    }
+    auto getIterator(const KeyT &key, size_t index) const
+    {
+
+        return std::find_if(_data[index].begin(), _data[index].end(),
+                            [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+    }
+
+    size_t getHash(KeyT key) const
 	{
 		return std::hash<KeyT>{}(key) & _capacity - 1;
 	}
 
+	std::pair<KeyT, ValueT>* getFirstElement()
+    {}
 	void updateContainer(bool enlarge)
 	{
         size_t old_capacity = (enlarge) ? _capacity / 2 : _capacity * 2;
@@ -159,9 +248,9 @@ private:
         _data = temp;
 	}
 
-	void refreshMap()
+	void refreshMap(bool insert)
 	{
-		if (getLoadFactor() < _minLoadFactor && _capacity > 1)
+		if (!insert && getLoadFactor() < _minLoadFactor && _capacity > 1)
 		{
 
 			_capacity /= 2;
@@ -190,12 +279,27 @@ private:
 
     ValueT& operator[](const KeyT& key) noexcept
     {
-        return _data[getHash(key)];
+        size_t index = getHash(key);
+        auto it = std::find_if(_data[index].begin(), _data[index].end(),
+                               [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+        if (it == _data[index].end())
+        {
+            ValueT value;
+            insert(key, value);
+            return at(key);
+        }
+        else
+        {
+            return it->second;
+        }
     }
 
     const ValueT& operator[](const KeyT& key) const noexcept
     {
-        return _data[getHash(key)];
+        size_t index = getHash(key);
+        auto it = std::find_if(_data[index].begin(), _data[index].end(),
+                               [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+        return it->second;
     }
 
     bool operator==(const HashMap& other)
@@ -223,9 +327,11 @@ private:
 template<typename KeyT, typename ValueT>
 HashMap<KeyT, ValueT>::HashMap(const HashMap<KeyT, ValueT> &other):
 		_capacity(other._capacity), _size(other._size),
-		_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor),
-		_data(other._data)
-{}
+		_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor)
+{
+    _data = new bucket[_capacity];
+    std::copy(other._data, other._data+_capacity, _data);
+}
 
 template<typename KeyT, typename ValueT>
 HashMap<KeyT, ValueT>::HashMap(double minLoadFactor, double maxLoadFactor):
@@ -242,15 +348,20 @@ HashMap<KeyT, ValueT>::HashMap(std::vector<KeyT> keys, std::vector<ValueT> value
         _size(keys.size())
 {
     assert(keys.size() == values.size());
-    _capacity = (size_t) pow(2,ceil(log(_size)));
-    _data = new bucket[_capacity]();
-    while (getLoadFactor() < _minLoadFactor || getLoadFactor() > _maxLoadFactor)
+    _capacity = (size_t) pow(2,ceil(log2(_size)));
+    if (_capacity < INITIAL_CAPACITY)
     {
-        refreshMap();
+        _capacity = INITIAL_CAPACITY;
     }
+    if  (getLoadFactor() > _maxLoadFactor)
+    {
+        _capacity *= 2;
+    }
+    _data = new bucket[_capacity];
     for (int i = 0; i < keys.size(); i++)
     {
         size_t bucketIndex = getHash(keys[i]);
         _data[bucketIndex].emplace_back(keys[i], values[i]);
     }
 }
+
