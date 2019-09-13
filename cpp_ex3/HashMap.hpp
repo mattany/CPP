@@ -42,9 +42,21 @@ public:
 		return (double) _size / (double) _capacity;
 	}
 
+	ValueT& at(const KeyT& key)
+    {
+        size_t index = getHash(key);
+        auto it = std::find_if(_data[index].begin(), _data[index].end(),
+                               [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+        if (it == _data[index].end())
+        {
+            throw std::exception();
+        }
+        return it->second;
+    }
+
 	const ValueT& at(const KeyT& key) const
 	{
-	    size_t index = getHash(key);
+        size_t index = getHash(key);
         auto it = std::find_if(_data[index].begin(), _data[index].end(),
                                [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
         if (it == _data[index].end())
@@ -53,8 +65,6 @@ public:
         }
         return it->second;
 	}
-
-
 
 	int bucketSize(const KeyT& key) const
     {
@@ -178,9 +188,35 @@ private:
         return *this;
     }
 
+    ValueT& operator[](const KeyT& key) noexcept
+    {
+        return _data[getHash(key)];
+    }
+
     const ValueT& operator[](const KeyT& key) const noexcept
     {
         return _data[getHash(key)];
+    }
+
+    bool operator==(const HashMap& other)
+    {
+        if (_size != other._size || _capacity != other._capacity)
+        {
+            return false;
+        }
+        for (KeyT key : this)
+        {
+            if (!other.containsKey(key) || other.at(key) != at(key))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator!=(const HashMap& other)
+    {
+        return (!operator==(other));
     }
 };
 
