@@ -171,16 +171,17 @@ TEST(HashMapTest, insertAndErase)
 
 }
 
-TEST(HashMapTest, iterator)
-{
-    std::vector<int> keys = {5, 233, 6238, 2100};
-    std::vector<std::string> values = {"a", "b", "c", "d"};
-    HashMap<int, std::string> h(keys, values);
-    for (auto k : h)
-    {
-//        std::cout << "aadssd " << k << std::endl;
-    }
-}
+//TEST(HashMapTest, iterator)
+//{
+//    std::vector<int> keys = {5, 233, 6238, 2100};
+//    std::vector<std::string> values = {"a", "b", "c", "d"};
+//    HashMap<int, std::string> h(keys, values);
+//    for (auto k : h)
+//    {
+//
+//    }
+//}
+
 
 TEST(HashMapTest, atAndSubscript)
 {
@@ -203,4 +204,23 @@ TEST(HashMapTest, atAndSubscript)
     EXPECT_EQ(h.at(4444).compare("a"), false);
     h.erase(4444);
     ASSERT_ANY_THROW(h.at(4444));
+}
+
+TEST(HashMapTest, compareEq)
+{
+    std::vector<int> keys = {2100, 5, 233, 6238};
+    std::vector<std::string> values = {"a", "b", "c", "d"};
+    HashMap<int, std::string> h(keys, values);
+    HashMap<int, std::string> s(keys, values);
+    ASSERT_EQ(h == s, true);
+    ASSERT_EQ(h != s, false);
+    s[5] = "e";
+    ASSERT_EQ(h == s, false);
+    ASSERT_EQ(h != s, true);
+    s[5] = "a";
+    s[6] = "t";
+    ASSERT_EQ(h == s, true);
+    ASSERT_EQ(h != s, false);
+    std::cout << "five "<<(std::hash<int>{}(5) & s.capacity() - 1) << std::endl;
+    std::cout << "six "<<(std::hash<int>{}(6) & s.capacity() - 1) << std::endl;
 }
