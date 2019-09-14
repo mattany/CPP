@@ -91,6 +91,20 @@ TEST(HashMapTest, vectorCtor)
         EXPECT_EQ(s.containsKey(keys[i]), true);
         EXPECT_EQ(s.at(keys[i]).compare(values[i]), false);
     }
+
+    //same key
+    std::vector<int> keys2(100,100);
+    HashMap<int, int> t(keys2, keys);
+    EXPECT_EQ(t.capacity(), 16);
+    EXPECT_EQ(t.size(), 1);
+    EXPECT_EQ(t.at(100), 95);
+
+    //empty
+    std::vector<int> k;
+    std::vector<double> v;
+    HashMap<int,double> r(k,v);
+    EXPECT_EQ(r.capacity(), 16);
+    EXPECT_EQ(r.size(), 0);
 }
 
 TEST(HashMapTest, insertAndErase)
@@ -161,8 +175,31 @@ TEST(HashMapTest, iterator)
     std::vector<int> keys = {5, 233, 6238, 2100};
     std::vector<std::string> values = {"a", "b", "c", "d"};
     HashMap<int, std::string> h(keys, values);
-    for (auto i : h)
+    for (auto k : h)
     {
-        std::cout << i;
+//        std::cout << "aadssd " << k << std::endl;
     }
+}
+
+TEST(HashMapTest, atAndSubscript)
+{
+    std::vector<int> keys = {5, 233, 6238, 2100};
+    std::vector<std::string> values = {"a", "b", "c", "d"};
+    HashMap<int, std::string> h(keys, values);
+    for (int i = 0; i< 4; i++)
+    {
+        int key = keys[i];
+        std::string value = values[i];
+        EXPECT_EQ(h.at(key),value);
+        EXPECT_EQ(h[key], value);
+        h.at(key) = "foo";
+        EXPECT_EQ(h.at(key).compare("foo"), false);
+        h[key] = "bar";
+        EXPECT_EQ(h[key].compare("bar"), false);
+    }
+    h[4444] = "a";
+    EXPECT_EQ(h[4444].compare("a"), false);
+    EXPECT_EQ(h.at(4444).compare("a"), false);
+    h.erase(4444);
+    ASSERT_ANY_THROW(h.at(4444));
 }
