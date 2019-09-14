@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-int main2(int argc , char *argv[])
+int main(int argc , char *argv[])
 {
     testing::InitGoogleTest(&argc , argv);
     return RUN_ALL_TESTS();
@@ -22,6 +22,7 @@ TEST(HashMapTest , DefaultConstructor)
     EXPECT_EQ(hashMap.capacity() , 16);
     EXPECT_EQ(hashMap.getLoadFactor() , 0);
 	EXPECT_EQ(hashMap.empty(), true);
+	EXPECT_EQ(hashMap.containsKey(double()), false);
 }
 
 TEST(HashMapTest, minMaxFactorConstructor)

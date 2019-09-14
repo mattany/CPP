@@ -62,7 +62,7 @@ public:
     const ValueT& at(const KeyT& key) const
 	{
         size_t index = getHash(key);
-        auto it = getIterator(key, index);
+        auto it = getConstIterator(key, index);
         if (it == _data[index].end())
         {
             throw std::exception();
@@ -136,25 +136,45 @@ public:
 		return false;
 	}
 
-    class Iterator
+    class iterator
     {
     public:
-        Iterator(const HashMap& hashMap,
+
+        iterator(const HashMap& hashMap,
                  const std::pair<KeyT,ValueT>& pair):
-                _hashMap(hashMap), _pair(pair) {}
-
-        std::pair<KeyT,ValueT>& operator*() const { return *_pair;}
-
-        std::pair<KeyT,ValueT>*operator->() const { return _pair;}
-
-        Iterator& operator++()
+                _hashMap(hashMap), _pair(pair)
         {
-            size_t index = _hashMap.getHash(_pair->first);
-            auto it = _hashMap.getIterator(_pair->first, index);
-            auto next = it + 1;
-            next = getNextElement(index, next);
-            _pair = next;
-            return *this;
+        	int index = 0;
+        	auto next =  _hashMap.getData()[0].begin();
+        	if (!_hashMap.containsKey(pair.first))
+	        {
+		        while(index < _hashMap._capacity && next == _hashMap.getData()[index].end())
+		        {
+			        index++;
+			        next = _hashMap.getData()[index].begin();
+		        }
+		        _pair = *next;
+	        }
+
+        }
+
+        const std::pair<KeyT,ValueT>& operator*() const { return _pair;}
+
+        std::pair<KeyT,ValueT>*operator->() const { return &_pair;}
+
+        iterator& operator++()
+        {
+            size_t index = _hashMap.getHash(_pair.first);
+	        const typename bucket::const_iterator it = _hashMap.getConstIterator(_pair.first, index);
+	        typename bucket::const_iterator next = it + 1;
+	        while(index < _hashMap._capacity && next == _hashMap.getData()[index].end())
+	        {
+		        index++;
+		        const typename bucket::const_iterator b = _hashMap.getData()[index].begin();
+		        next = b;
+	        }
+            _pair = *next;
+	        return *this;
         }
 
         void setPair(const std::pair<KeyT, ValueT>&  pair)
@@ -162,7 +182,7 @@ public:
             _pair = pair;
         }
 
-        const std::pair<KeyT, ValueT>& getNextElement(size_t index, Iterator next) const
+        const std::pair<KeyT, ValueT>& getNextElement(size_t index, typename bucket::iterator& next) const
         {
             while(index < _hashMap._capacity && next == _hashMap.getData()[index].end())
             {
@@ -172,19 +192,19 @@ public:
             return *next;
         }
 
-        Iterator operator++(int)
+        iterator operator++(int)
         {
-            Iterator tmp = *this;
+            iterator tmp = *this;
             operator++();
             return tmp;
         }
 
-        bool operator==(Iterator const& other) const
+        bool operator==(iterator const& other) const
         {
             return (_pair == other._pair && _hashMap == other._hashMap);
         }
 
-        bool operator!=(Iterator const& other) const
+        bool operator!=(iterator const& other) const
         {
             return (!operator==(other));
         }
@@ -195,18 +215,14 @@ public:
     };
 
 
-    Iterator begin() const noexcept
+    const iterator begin() const noexcept
     {
-        auto a = _data[0].begin();
-        auto pair = std::make_pair(KeyT(), ValueT());
-        Iterator it(*this, pair);
-        it.setPair(it.getNextElement(0, _data[0].begin()));
-        return it;
+        return iterator(*this, std::make_pair(KeyT(), ValueT()));
     }
 
-    const Iterator end() const noexcept
+    const iterator end() const noexcept
     {
-        return Iterator(this, nullptr);
+        return iterator(*this, *_data[_size - 1].end());
     }
 
     HashMap& operator=(const HashMap& other)
@@ -247,14 +263,15 @@ public:
         return it->second;
     }
 
-    bool operator==(const HashMap& other)
+    bool operator==(const HashMap& other) const
     {
         if (_size != other._size || _capacity != other._capacity)
         {
             return false;
         }
-        for (KeyT key : this)
+        for (std::pair<KeyT,ValueT> pair : *this)
         {
+        	KeyT key = pair.first;
             if (!other.containsKey(key) || other.at(key) != at(key))
             {
                 return false;
@@ -278,7 +295,14 @@ private:
         return _data;
     }
 
-    auto getIterator(const KeyT &key, size_t index) const
+	const typename bucket::iterator getIterator(const KeyT &key, size_t index) const
+	{
+
+		return std::find_if(_data[index].begin(), _data[index].end(),
+		                    [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+	}
+
+    const typename bucket::const_iterator getConstIterator(const KeyT &key, size_t index) const
     {
 
         return std::find_if(_data[index].begin(), _data[index].end(),
