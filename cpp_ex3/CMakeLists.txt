@@ -19,6 +19,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(SOURCE_FILES tests.cpp)
 
 
-add_executable(cpp_ex3 SpamDetector.cpp HashMap.hpp tests.cpp)
+add_executable(cpp_ex3 SpamDetector.cpp HashMap.hpp tests.cpp HashMapTester.cpp)
 
 target_link_libraries(cpp_ex3 gtest gtest_main)

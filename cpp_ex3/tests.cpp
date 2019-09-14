@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-int main(int argc , char *argv[])
+int main3(int argc , char *argv[])
 {
     testing::InitGoogleTest(&argc , argv);
     return RUN_ALL_TESTS();
@@ -206,7 +206,7 @@ TEST(HashMapTest, atAndSubscript)
     ASSERT_ANY_THROW(h.at(4444));
 }
 
-TEST(HashMapTest, compareEq)
+TEST(HashMapTest, compare)
 {
     std::vector<int> keys = {2100, 5, 233, 6238};
     std::vector<std::string> values = {"a", "b", "c", "d"};
@@ -217,10 +217,40 @@ TEST(HashMapTest, compareEq)
     s[5] = "e";
     ASSERT_EQ(h == s, false);
     ASSERT_EQ(h != s, true);
-    s[5] = "a";
-    s[6] = "t";
-    ASSERT_EQ(h == s, true);
-    ASSERT_EQ(h != s, false);
-    std::cout << "five "<<(std::hash<int>{}(5) & s.capacity() - 1) << std::endl;
-    std::cout << "six "<<(std::hash<int>{}(6) & s.capacity() - 1) << std::endl;
+    s[5] = "b";
+	ASSERT_EQ(h == s, true);
+	ASSERT_EQ(h != s, false);
+	s[6] = "t";
+	ASSERT_EQ(h == s, false);
+	ASSERT_EQ(h != s, true);
+	s[21] = "k";
+	h[21] = "k";
+	h[6] = "t";
+	ASSERT_EQ(h == s, true);
+	ASSERT_EQ(h != s, false);
+
+	s.clear();
+	h.clear();
+	ASSERT_EQ(h == s, true);
+	ASSERT_EQ(h != s, false);
+
+	//Non equal capacity test
+	for (int i = 0; i < 4; ++i)
+	{
+        char c =(char) i;
+	    h[i] = c;
+	}
+	for (int i = 0; i < 13; ++i)
+    {
+        char c =(char) i;
+	    s[i] = c;
+    }
+    s.clear();
+    for (int i = 0; i < 4; ++i)
+    {
+        char c =(char) i;
+        s[i] = c;
+    }
+    ASSERT_EQ(h == s, false);
+    ASSERT_EQ(h != s, true);
 }

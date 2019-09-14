@@ -154,7 +154,7 @@ public:
     		_hashMap = hashMap;
         	int index = 0;
         	auto next =  _hashMap.getData()[0].begin();
-        	if (!pair && !endptr)
+        	if (!pair && !endptr && _hashMap._size > 0)
 	        {
 		        while(index < _hashMap._capacity && _hashMap.getData()[index].empty())
 		        {
@@ -219,7 +219,7 @@ public:
 
         bool operator==(iterator const& other) const
         {
-            return (_pair == other._pair && _hashMap == other._hashMap);
+            return (_pair == other._pair);
         }
 
         bool operator!=(iterator const& other) const
@@ -291,7 +291,6 @@ public:
             {
                 return false;
             }
-            std::cout<<"key: "<< key <<" value: " << pair.second << std::endl;
         }
         return true;
     }
@@ -384,12 +383,13 @@ template<typename KeyT, typename ValueT>
 HashMap<KeyT, ValueT>::HashMap(const std::vector<KeyT>& keys, const std::vector<ValueT>& values):
         HashMap()
 {
-    assert(keys.size() == values.size());
+    if (keys.size() == values.size())
+    {
+    	throw std::exception();
+    }
 	for (int i = 0; i <keys.size(); i++)
 	{
-		KeyT key = keys[i];
-		ValueT value = values[i];
-		(*this)[key] = value;
+		(*this)[keys[i]] =  values[i];
 	}
 }
 
