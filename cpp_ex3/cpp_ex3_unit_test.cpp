@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-int main3(int argc , char *argv[])
+int main2(int argc , char *argv[])
 {
     testing::InitGoogleTest(&argc , argv);
     return RUN_ALL_TESTS();
@@ -59,11 +59,37 @@ TEST(HashMapTest, copyCtor)
 
 }
 
+TEST(HashMapTest, copyAssignment)
+{
+    HashMap<int, int> b(0.2, 0.7);
+    auto a = b;
+    a.insert(0, 1);
+    //check that b doesn't add when a does and reverse
+    ASSERT_ANY_THROW(b.at(0));
+    b.insert(0, 1);
+    ASSERT_EQ(a, b);
+    b.insert(1, 1);
+    ASSERT_EQ(a == b, false);
+    ASSERT_ANY_THROW(a.at(1));
+    ASSERT_EQ(a.capacity(), b.capacity());
+    for (int i =  2; i< 200; i++)
+    {
+        a.insert(i, i);
+    }
+    a.clear(); a.insert(0,1); a.insert(1, 1);
+    ASSERT_EQ(a.capacity(), 512);
+    ASSERT_EQ(a == b, false);
+    ASSERT_EQ(a.size(), b.size());
+    ASSERT_EQ(a.capacity() == b.capacity(), false);
+    a.clear(); a = b;
+    ASSERT_EQ(a == b, true);
+    ASSERT_EQ(a.size(), b.size());
+}
+
 TEST(HashMapTest, vectorCtor)
 {
-
     //small
-    std::vector<int> keys{96, 97, 98, 99};
+    std::vector<int> keys{0, 1, 2, 3};
     std::vector<std::string> values{"aa", "bb", "c", "d"};
     HashMap<int, std::string> h(keys, values);
     EXPECT_EQ(h.capacity(), 16);
@@ -73,8 +99,12 @@ TEST(HashMapTest, vectorCtor)
         EXPECT_EQ(h.containsKey(keys[i]), true);
         EXPECT_EQ(h.at(keys[i]).compare(values[i]), false);
     }
+    auto a =(HashMap<int, std::string>(keys, values));
+    //bad size
+    std::vector<std::string> vals{"aa", "bb", "c", "d", "e"};
+    ASSERT_ANY_THROW(auto b =(HashMap<int, std::string>(keys, vals)));
 
-    for (int i = 0; i < 96; i++)
+    for (int i = 4; i < 100; i++)
     {
         keys.push_back(i);
         char c =(char) i;
@@ -98,7 +128,7 @@ TEST(HashMapTest, vectorCtor)
     HashMap<int, int> t(keys2, keys);
     EXPECT_EQ(t.capacity(), 16);
     EXPECT_EQ(t.size(), 1);
-    EXPECT_EQ(t.at(100), 95);
+    EXPECT_EQ(t.at(100), 99);
 
     //empty
     std::vector<int> k;
@@ -171,17 +201,56 @@ TEST(HashMapTest, insertAndErase)
 
 }
 
-//TEST(HashMapTest, iterator)
-//{
-//    std::vector<int> keys = {5, 233, 6238, 2100};
-//    std::vector<std::string> values = {"a", "b", "c", "d"};
-//    HashMap<int, std::string> h(keys, values);
-//    for (auto k : h)
-//    {
-//
-//    }
-//}
+TEST(HashMapTest, iterator)
+{
+    std::vector<int> keys = {0, 1, 2, 3};
+    std::vector<int> values = {100,101,102,103};
+    HashMap<int, int> h(keys, values);
+    int i = 0;
+    for (auto k : h)
+    {
+        i++;
+    }
+    EXPECT_EQ(i, 4);
+    for (; i < 100; i++)
+    {
+        keys.push_back(i);
+        values.push_back(i+100);
+    }
 
+    HashMap<int, int> s(keys, values);
+    int j = 0;
+    for (auto i = s.begin(); i != s.end(); ++i)
+    {
+        ASSERT_EQ((*i).first, keys[(*i).first]);
+        ASSERT_EQ(i->second, values[i->second - 100]);
+        ++j;
+    }
+    EXPECT_EQ(j, 100);
+    j = 0;
+    for (auto i = s.cbegin(); i != s.cend(); ++i)
+    {
+        ASSERT_EQ((*i).first, keys[(*i).first]);
+        ASSERT_EQ(i->second, values[i->second - 100]);
+        ++j;
+    }
+    EXPECT_EQ(j, 100);
+
+}
+
+TEST(HashMapTest, bucketSize)
+{
+    std::vector<int> keys{1, 2, 18, 3, 19, 35, 4, 20, 36, 52};
+    std::vector<int> values(10,0);
+    HashMap<int, int> h(keys, values);
+    EXPECT_ANY_THROW(h.bucketSize(0));
+    for (int i = 1; i <5; ++i)
+    {
+        EXPECT_EQ(h.bucketSize(i), i);
+    }
+
+
+}
 
 TEST(HashMapTest, atAndSubscript)
 {

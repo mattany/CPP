@@ -366,14 +366,14 @@ int main()
     testDefConstructor();
     testConstructorWithFactor();
     testConstructorVectors();
-//    testCopyAndAssign();
-//    testIterator();
-//    testClearAndCopy();
-//    testBucketSize();
-//    testEraseEasyDefaultFactors();
-//    testBracketsOperator();
-//    testEqualityOperators();
-//    insertionTest();
-//    testInsertRandom();
+    testCopyAndAssign();
+    testIterator();
+    testClearAndCopy();
+    testBucketSize();
+    testEraseEasyDefaultFactors();
+    testBracketsOperator();
+    testEqualityOperators();
+    insertionTest();
+    testInsertRandom();
     return 0;
 }

@@ -1,0 +1,5 @@
+
+matan,2
+tel aviv,3
+my name is,5
+asf,2

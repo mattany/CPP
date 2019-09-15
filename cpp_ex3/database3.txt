@@ -1,0 +1,6 @@
+your bank account,5
+give me,5
+don't be afraid,10
+be aware,5
+my details are online,5
+this will not be in mail,100
