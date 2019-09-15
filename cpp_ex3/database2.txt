@@ -1,3 +1,0 @@
-not,1
-spam,1
-msg,1

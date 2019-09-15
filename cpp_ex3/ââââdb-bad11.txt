@@ -1,4 +1,0 @@
-matan,2
-tel aviv,3
-my name is,2.2
-asf,2

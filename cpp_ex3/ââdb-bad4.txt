@@ -1,4 +1,0 @@
-matan,2
-tel aviv,3
-,2
-asf,2
