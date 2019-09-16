@@ -388,14 +388,7 @@ HashMap<KeyT, ValueT>::HashMap(const HashMap<KeyT, ValueT> &other):
 		_capacity(other._capacity), _size(other._size),
 		_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor)
 {
-    try
-    {
-        _data = new bucket[_capacity];
-    }
-    catch(std::bad_alloc&)
-    {
-        throw std::bad_alloc();
-    }
+	_data = new bucket[_capacity];
     std::copy(other._data, other._data+_capacity, _data);
 }
 
@@ -404,7 +397,7 @@ HashMap<KeyT, ValueT>::HashMap(double minLoadFactor, double maxLoadFactor):
 		_capacity(INITIAL_CAPACITY), _size(INITIAL_SIZE),
 		_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor)
 {
-	if (!(0 <= minLoadFactor && minLoadFactor < maxLoadFactor && maxLoadFactor <= 1))
+	if (!(0 < minLoadFactor && minLoadFactor <= maxLoadFactor && maxLoadFactor < 1))
     {
 	    throw std::domain_error(LOAD_FACTOR_DOMAIN);
     }

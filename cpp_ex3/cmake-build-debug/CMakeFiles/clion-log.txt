@@ -1,4 +1,4 @@
-/usr/local/APP/jetbrains/clion/2018.2.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cs/usr/mattan/Desktop/CPP/cpp_ex3
+C:\Users\Mattan\.CLion2018.2\system\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3
 -- Configuring done
 -- Generating done
--- Build files have been written to: /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug
+-- Build files have been written to: /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug

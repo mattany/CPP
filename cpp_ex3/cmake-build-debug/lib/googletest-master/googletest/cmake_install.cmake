@@ -1,4 +1,4 @@
-# Install script for directory: /cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googletest
+# Install script for directory: /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googletest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,11 +27,6 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "1")
-endif()
-
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
@@ -41,7 +36,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest/GTestTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest/GTestTargets.cmake"
-         "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake")
+         "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest/GTestTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -50,36 +45,36 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest" TYPE FILE FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest" TYPE FILE FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest" TYPE FILE FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets-debug.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest" TYPE FILE FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/CMakeFiles/Export/lib/cmake/GTest/GTestTargets-debug.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/GTest" TYPE FILE FILES
-    "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/GTestConfigVersion.cmake"
-    "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/GTestConfig.cmake"
+    "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/GTestConfigVersion.cmake"
+    "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/GTestConfig.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googletest/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googletest/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/libgtestd.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/libgtestd.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/libgtest_maind.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/libgtest_maind.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/gtest.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/gtest.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/gtest_main.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googletest/generated/gtest_main.pc")
 endif()
 

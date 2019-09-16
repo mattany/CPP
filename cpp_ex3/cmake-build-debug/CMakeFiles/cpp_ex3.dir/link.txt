@@ -1,1 +1,1 @@
-/usr/bin/c++   -std=c++14 -g   CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o CMakeFiles/cpp_ex3.dir/tests.cpp.o  -o cpp_ex3 lib/libgtestd.a lib/libgtest_maind.a lib/libgtestd.a -lpthread 
+/usr/bin/c++.exe  -std=c++14 -g  -Wl,--enable-auto-import CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o  -o cpp_ex3.exe -Wl,--out-implib,libcpp_ex3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 lib/libgtestd.a lib/libgtest_maind.a lib/libgtestd.a 

@@ -300,19 +300,27 @@ cxxabi.h
 acxx_demangle.h
 -
 
-/cs/usr/mattan/Desktop/CPP/cpp_ex3/HashMap.hpp
+/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/HashMap.hpp
 vector
 -
 cmath
 -
+unordered_map
+-
+algorithm
+-
+cassert
+-
 
-/cs/usr/mattan/Desktop/CPP/cpp_ex3/tests.cpp
+/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cpp_ex3_unit_test_v1.cpp
 iostream
 -
 gtest/gtest.h
-/cs/usr/mattan/Desktop/CPP/cpp_ex3/gtest/gtest.h
+/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/gtest/gtest.h
 HashMap.hpp
-/cs/usr/mattan/Desktop/CPP/cpp_ex3/HashMap.hpp
+/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/HashMap.hpp
+string
+-
 sstream
 -
 

@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/APP/jetbrains/clion/2018.2.1/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /cygdrive/c/Users/Mattan/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
 
 # The command to remove a file.
-RM = /usr/local/APP/jetbrains/clion/2018.2.1/bin/cmake/linux/bin/cmake -E remove -f
+RM = /cygdrive/c/Users/Mattan/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cs/usr/mattan/Desktop/CPP/cpp_ex3
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/depend.make
@@ -59,16 +59,16 @@ include lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/flags.make
 
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o: lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/flags.make
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o: ../lib/googletest-master/googlemock/src/gmock_main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o"
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o"
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc
 
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gmock_main.dir/src/gmock_main.cc.i"
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc > CMakeFiles/gmock_main.dir/src/gmock_main.cc.i
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc > CMakeFiles/gmock_main.dir/src/gmock_main.cc.i
 
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gmock_main.dir/src/gmock_main.cc.s"
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.s
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && /usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googlemock/src/gmock_main.cc -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.s
 
 # Object files for target gmock_main
 gmock_main_OBJECTS = \
@@ -80,9 +80,9 @@ gmock_main_EXTERNAL_OBJECTS =
 lib/libgmock_maind.a: lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
 lib/libgmock_maind.a: lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build.make
 lib/libgmock_maind.a: lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library ../../libgmock_maind.a"
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -P CMakeFiles/gmock_main.dir/cmake_clean_target.cmake
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gmock_main.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library ../../libgmock_maind.a"
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -P CMakeFiles/gmock_main.dir/cmake_clean_target.cmake
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gmock_main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build: lib/libgmock_maind.a
@@ -90,10 +90,10 @@ lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build: lib/libgmock_m
 .PHONY : lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/build
 
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/clean:
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -P CMakeFiles/gmock_main.dir/cmake_clean.cmake
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock && $(CMAKE_COMMAND) -P CMakeFiles/gmock_main.dir/cmake_clean.cmake
 .PHONY : lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/clean
 
 lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/depend:
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cs/usr/mattan/Desktop/CPP/cpp_ex3 /cs/usr/mattan/Desktop/CPP/cpp_ex3/lib/googletest-master/googlemock /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/DependInfo.cmake --color=$(COLOR)
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3 /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/lib/googletest-master/googlemock /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : lib/googletest-master/googlemock/CMakeFiles/gmock_main.dir/depend
 

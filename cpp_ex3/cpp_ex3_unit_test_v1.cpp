@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-int main2(int argc , char *argv[])
+int main(int argc , char *argv[])
 {
     testing::InitGoogleTest(&argc , argv);
     return RUN_ALL_TESTS();
@@ -27,13 +27,19 @@ TEST(HashMapTest , DefaultConstructor)
 
 TEST(HashMapTest, minMaxFactorConstructor)
 {
-    HashMap<std::string, std::string> hashMap(0, 1);
+	using StringMap = HashMap<std::string, std::string>;
+
+	//v2
+    EXPECT_ANY_THROW(StringMap hashMap(0, 1));
+    EXPECT_ANY_THROW(StringMap h(0.5, 0.2));  //Order of args is (lower, upper) according to forum
+	EXPECT_ANY_THROW(StringMap h(0.2, 1.1));
+	EXPECT_ANY_THROW(StringMap h(-1, 0.2));
+	StringMap hashMap(0.5, 0.5);       //Not sure if legal - keep updated on forum
 
     EXPECT_EQ(hashMap.size() , 0);
     EXPECT_EQ(hashMap.capacity() , 16);
     EXPECT_EQ(hashMap.getLoadFactor() , 0);
     EXPECT_EQ(hashMap.empty(), true);
-    //todo Death Tests
 }
 
 TEST(HashMapTest, copyCtor)
@@ -322,4 +328,12 @@ TEST(HashMapTest, compare)
     }
     ASSERT_EQ(h == s, false);
     ASSERT_EQ(h != s, true);
+
+    //Equal buckets test     v2
+	std::vector<int> keys_a{1, 2, 18, 3, 19, 35, 4, 20, 36, 52};
+	std::vector<int> keys_b{52, 36, 20, 4, 35, 19, 3, 18, 2, 1};
+	std::vector<int> vals(10,0);
+	HashMap<int, int> a(keys_a, vals), b(keys_b, vals);
+	ASSERT_EQ(a,b);
+	ASSERT_EQ(a !=b, false);
 }

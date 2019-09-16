@@ -12,6 +12,7 @@ static const int THRESHOLD = 3;
 static const int MESSAGE = 2;
 static const char *const SPAM_MESSAGE = "SPAM";
 static const char *const NOT_SPAM_MESSAGE = "NOT SPAM";
+static const char *const MEMORY_EXCEPTION = "Memory allocation failed";
 static const char *USAGE = "Usage: SpamDetector <database path> <message path> <threshold>";
 
 /**
@@ -125,7 +126,7 @@ bool parseDatabase(std::vector<std::string> &keys, std::vector<int> &values,
 bool parseMessage(const std::vector<std::string> &keys,
                   std::vector<int> &scores, const std::string &filepath, int &totalScore)
 {
-    HashMap<std::string, int> scoreMap(keys, scores);
+	HashMap<std::string, int> scoreMap(keys, scores);
     std::string line;
     std::ifstream message;
     message.open(filepath);
@@ -171,13 +172,24 @@ bool parseFile(int argc, const char **argv, int &threshold, int &totalScore)
 }
 
 
-int main(int argc, const char **argv)
+int main2(int argc, const char **argv)
 {
 
     int threshold = 0, totalScore = 0;
-    parseFile(argc, argv, threshold, totalScore);
-    (totalScore >= threshold) ?
-    std::cout << SPAM_MESSAGE << std::endl :
-    std::cout << NOT_SPAM_MESSAGE << std::endl;
-    return 0;
+    try
+	{
+		if (parseFile(argc, argv, threshold, totalScore))
+		{
+			(totalScore >= threshold) ?
+			std::cout << SPAM_MESSAGE << std::endl :
+			std::cout << NOT_SPAM_MESSAGE << std::endl;
+			return 0;
+		}
+	}
+	catch(std::bad_alloc&)
+	{
+		std::cerr << MEMORY_EXCEPTION << std::endl;
+	}
+	return 1;
+
 }

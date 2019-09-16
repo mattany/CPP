@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/APP/jetbrains/clion/2018.2.1/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /cygdrive/c/Users/Mattan/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
 
 # The command to remove a file.
-RM = /usr/local/APP/jetbrains/clion/2018.2.1/bin/cmake/linux/bin/cmake -E remove -f
+RM = /cygdrive/c/Users/Mattan/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cs/usr/mattan/Desktop/CPP/cpp_ex3
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/cpp_ex3.dir/depend.make
@@ -59,50 +59,50 @@ include CMakeFiles/cpp_ex3.dir/flags.make
 
 CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o: CMakeFiles/cpp_ex3.dir/flags.make
 CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o: ../SpamDetector.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o -c /cs/usr/mattan/Desktop/CPP/cpp_ex3/SpamDetector.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o"
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o -c /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/SpamDetector.cpp
 
 CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cs/usr/mattan/Desktop/CPP/cpp_ex3/SpamDetector.cpp > CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.i
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/SpamDetector.cpp > CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.i
 
 CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cs/usr/mattan/Desktop/CPP/cpp_ex3/SpamDetector.cpp -o CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.s
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/SpamDetector.cpp -o CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.s
 
-CMakeFiles/cpp_ex3.dir/tests.cpp.o: CMakeFiles/cpp_ex3.dir/flags.make
-CMakeFiles/cpp_ex3.dir/tests.cpp.o: ../tests.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/cpp_ex3.dir/tests.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpp_ex3.dir/tests.cpp.o -c /cs/usr/mattan/Desktop/CPP/cpp_ex3/tests.cpp
+CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o: CMakeFiles/cpp_ex3.dir/flags.make
+CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o: ../cpp_ex3_unit_test_v1.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o"
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o -c /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cpp_ex3_unit_test_v1.cpp
 
-CMakeFiles/cpp_ex3.dir/tests.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpp_ex3.dir/tests.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cs/usr/mattan/Desktop/CPP/cpp_ex3/tests.cpp > CMakeFiles/cpp_ex3.dir/tests.cpp.i
+CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.i"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cpp_ex3_unit_test_v1.cpp > CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.i
 
-CMakeFiles/cpp_ex3.dir/tests.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpp_ex3.dir/tests.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cs/usr/mattan/Desktop/CPP/cpp_ex3/tests.cpp -o CMakeFiles/cpp_ex3.dir/tests.cpp.s
+CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.s"
+	/usr/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cpp_ex3_unit_test_v1.cpp -o CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.s
 
 # Object files for target cpp_ex3
 cpp_ex3_OBJECTS = \
 "CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o" \
-"CMakeFiles/cpp_ex3.dir/tests.cpp.o"
+"CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o"
 
 # External object files for target cpp_ex3
 cpp_ex3_EXTERNAL_OBJECTS =
 
-cpp_ex3: CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o
-cpp_ex3: CMakeFiles/cpp_ex3.dir/tests.cpp.o
-cpp_ex3: CMakeFiles/cpp_ex3.dir/build.make
-cpp_ex3: lib/libgtestd.a
-cpp_ex3: lib/libgtest_maind.a
-cpp_ex3: lib/libgtestd.a
-cpp_ex3: CMakeFiles/cpp_ex3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable cpp_ex3"
+cpp_ex3.exe: CMakeFiles/cpp_ex3.dir/SpamDetector.cpp.o
+cpp_ex3.exe: CMakeFiles/cpp_ex3.dir/cpp_ex3_unit_test_v1.cpp.o
+cpp_ex3.exe: CMakeFiles/cpp_ex3.dir/build.make
+cpp_ex3.exe: lib/libgtestd.a
+cpp_ex3.exe: lib/libgtest_maind.a
+cpp_ex3.exe: lib/libgtestd.a
+cpp_ex3.exe: CMakeFiles/cpp_ex3.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable cpp_ex3.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cpp_ex3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/cpp_ex3.dir/build: cpp_ex3
+CMakeFiles/cpp_ex3.dir/build: cpp_ex3.exe
 
 .PHONY : CMakeFiles/cpp_ex3.dir/build
 
@@ -111,6 +111,6 @@ CMakeFiles/cpp_ex3.dir/clean:
 .PHONY : CMakeFiles/cpp_ex3.dir/clean
 
 CMakeFiles/cpp_ex3.dir/depend:
-	cd /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cs/usr/mattan/Desktop/CPP/cpp_ex3 /cs/usr/mattan/Desktop/CPP/cpp_ex3 /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug /cs/usr/mattan/Desktop/CPP/cpp_ex3/cmake-build-debug/CMakeFiles/cpp_ex3.dir/DependInfo.cmake --color=$(COLOR)
+	cd /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3 /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3 /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug /cygdrive/c/Users/Mattan/CLionProjects/CPP/cpp_ex3/cmake-build-debug/CMakeFiles/cpp_ex3.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/cpp_ex3.dir/depend
 

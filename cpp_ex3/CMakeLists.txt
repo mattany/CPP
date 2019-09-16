@@ -1,12 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(cpp_ex3)
 
-include_directories(/home/mattan/Desktop/CPP/cpp_ex3/lib)
-
-#find_library(ex1_lib cpp_ex3)
-
-#grouping the libraries
-#set(frameworks ${ex1_lib})
+include_directories(C:/Users/Mattan/CLionProjects/CPP/cpp_ex3)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -19,6 +14,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(SOURCE_FILES cpp_ex3_unit_test.cpp)
 
 
-add_executable(cpp_ex3 SpamDetector.cpp HashMap.hpp)
+add_executable(cpp_ex3 SpamDetector.cpp HashMap.hpp cpp_ex3_unit_test_v1.cpp)
 
 target_link_libraries(cpp_ex3 gtest gtest_main)
