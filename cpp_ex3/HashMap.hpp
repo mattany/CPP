@@ -397,7 +397,7 @@ HashMap<KeyT, ValueT>::HashMap(double minLoadFactor, double maxLoadFactor):
 		_capacity(INITIAL_CAPACITY), _size(INITIAL_SIZE),
 		_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor)
 {
-	if (!(0 < minLoadFactor && minLoadFactor <= maxLoadFactor && maxLoadFactor < 1))
+	if (!(0 < minLoadFactor && minLoadFactor < maxLoadFactor && maxLoadFactor < 1))
     {
 	    throw std::domain_error(LOAD_FACTOR_DOMAIN);
     }
