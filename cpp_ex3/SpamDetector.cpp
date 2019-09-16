@@ -172,7 +172,7 @@ bool parseFile(int argc, const char **argv, int &threshold, int &totalScore)
 }
 
 
-int main(int argc, const char **argv)
+int main2(int argc, const char **argv)
 {
 
     int threshold = 0, totalScore = 0;
