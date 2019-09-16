@@ -43,13 +43,14 @@ public:
 	HashMap(HashMap && other) noexcept:
 	_capacity(other._capacity),
 	_size(other._size), _maxLoadFactor(other._maxLoadFactor),
-	_minLoadFactor(other._size), _data(std::move(other._data))
+	_minLoadFactor(other._size)
 	{
+		delete[] _data;
+		_data = other._data;
 		other._minLoadFactor = 0;
 		other._maxLoadFactor =0;
 		other._size = 0;
 		other._capacity = 0;
-		delete[] other._data;
 		other._data = nullptr;
 	}
 
