@@ -16,22 +16,11 @@ static const char *const MEMORY_EXCEPTION = "Memory allocation failed";
 static const char *USAGE = "Usage: SpamDetector <database path> <message path> <threshold>";
 
 /**
- * @return exit failure
+ *
+ * @param input
+ * @param output
+ * @return
  */
-void usageError()
-{
-    std::cerr << USAGE << std::endl;
-}
-
-/**
- * @return exit failure
- */
-void inputError()
-{
-    std::cerr << INPUT << std::endl;
-}
-
-
 bool parseInt(const char *input, int &output)
 {
     char *endptr;
@@ -156,23 +145,23 @@ bool parseFile(int argc, const char **argv, int &threshold, int &totalScore)
 {
     if (argc != CORRECT_ARG_NUMBER)
     {
-        usageError();
+	    std::cerr << USAGE << std::endl;
         return false;
     }
     std::vector<std::string> keys;
     std::vector<int> scores;
-    if (!parseInt(argv[THRESHOLD], threshold)
+    if (!parseInt(argv[THRESHOLD], threshold) || !threshold
         || !parseDatabase(keys, scores, argv[DATABASE])
         || !parseMessage(keys, scores, argv[MESSAGE], totalScore))
     {
-        inputError();
+	    std::cerr << INPUT << std::endl;
         return false;
     }
     return true;
 }
 
 
-int main2(int argc, const char **argv)
+int main(int argc, const char **argv)
 {
 
     int threshold = 0, totalScore = 0;

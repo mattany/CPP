@@ -45,7 +45,7 @@ public:
 	_size(other._size), _maxLoadFactor(other._maxLoadFactor),
 	_minLoadFactor(other._size)
 	{
-		delete[] _data;
+//		delete[] _data;
 		_data = other._data;
 		other._minLoadFactor = 0;
 		other._maxLoadFactor =0;
@@ -338,7 +338,9 @@ public:
 
     bool operator==(const HashMap& other) const
     {
-        if (_size != other._size || _capacity != other._capacity)
+        if (_size != other._size || _capacity != other._capacity ||
+        _minLoadFactor != other._minLoadFactor ||
+        _maxLoadFactor != other._maxLoadFactor)
         {
             return false;
         }
