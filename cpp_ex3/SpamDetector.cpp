@@ -16,10 +16,9 @@ static const char *const MEMORY_EXCEPTION = "Memory allocation failed";
 static const char *USAGE = "Usage: SpamDetector <database path> <message path> <threshold>";
 
 /**
- *
- * @param input
- * @param output
- * @return
+ * @param input The string to convert to a non-negative integer
+ * @param output A non-negative integer
+ * @return true iff success
  */
 bool parseInt(const char *input, int &output)
 {
@@ -38,8 +37,8 @@ bool parseInt(const char *input, int &output)
 }
 
 /**
- * @param line
- * @return true if line is in correct format
+ * @param line from database
+ * @return true iff line is in correct format
  */
 bool parseLine(const std::string &line, std::vector<std::string> &keys, std::vector<int> &scores)
 {
@@ -74,6 +73,10 @@ bool parseLine(const std::string &line, std::vector<std::string> &keys, std::vec
     return (counter == 2);
 }
 
+/**
+ * Convert uppercase letters to lowercase
+ * @param input String
+ */
 void convertToLowercase(std::string &input)
 {
     for (char &i : input)
@@ -85,7 +88,13 @@ void convertToLowercase(std::string &input)
     }
 }
 
-bool parseDatabase(std::vector<std::string> &keys, std::vector<int> &values,
+/**
+ * @param words Spam words
+ * @param scores
+ * @param filePath path to database
+ * @return true iff success
+ */
+bool parseDatabase(std::vector<std::string> &words, std::vector<int> &scores,
                    const std::string &filePath)
 {
     std::string line;
@@ -98,20 +107,26 @@ bool parseDatabase(std::vector<std::string> &keys, std::vector<int> &values,
     while (getline(database, line))
     {
         std::vector<std::string> row;
-        if (!parseLine(line, keys, values))
+        if (!parseLine(line, words, scores))
         {
             return false;
         }
     }
     database.close();
-    for (std::string &key : keys)
+    for (std::string &key : words)
     {
         convertToLowercase(key);
     }
     return true;
 }
 
-
+/**
+ * @param keys Spammy words
+ * @param scores
+ * @param filepath to message
+ * @param totalScore sum of products of (no. of appearances)*score of spam words.
+ * @return true iff success
+ */
 bool parseMessage(const std::vector<std::string> &keys,
                   std::vector<int> &scores, const std::string &filepath, int &totalScore)
 {
@@ -141,6 +156,13 @@ bool parseMessage(const std::vector<std::string> &keys,
     return true;
 }
 
+/**
+ * @param argc
+ * @param argv
+ * @param threshold
+ * @param totalScore sum of products of (no. of appearances)*score of spam words.
+ * @return true iff success
+ */
 bool parseFile(int argc, const char **argv, int &threshold, int &totalScore)
 {
     if (argc != CORRECT_ARG_NUMBER)
@@ -160,7 +182,11 @@ bool parseFile(int argc, const char **argv, int &threshold, int &totalScore)
     return true;
 }
 
-
+/**
+ * @param argc
+ * @param argv
+ * @return 0 if no errors, 1 otherwise
+ */
 int main(int argc, const char **argv)
 {
 
@@ -180,5 +206,4 @@ int main(int argc, const char **argv)
 		std::cerr << MEMORY_EXCEPTION << std::endl;
 	}
 	return 1;
-
 }
