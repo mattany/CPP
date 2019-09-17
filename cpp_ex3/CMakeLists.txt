@@ -14,6 +14,6 @@ set(CMAKE_CXX_STANDARD 14)
 #set(SOURCE_FILES cpp_ex3_unit_test.cpp)
 
 
-add_executable(cpp_ex3 HashMap.hpp HashMapTester1.2.cpp)
+add_executable(cpp_ex3 HashMap.hpp SpamDetector.cpp)
 
 #target_link_libraries(cpp_ex3 gtest gtest_main)
