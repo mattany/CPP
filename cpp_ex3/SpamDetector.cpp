@@ -11,7 +11,7 @@ static const int DATABASE = 1;
 static const int THRESHOLD = 3;
 static const int MESSAGE = 2;
 static const char *const SPAM_MESSAGE = "SPAM";
-static const char *const NOT_SPAM_MESSAGE = "NOT SPAM";
+static const char *const NOT_SPAM_MESSAGE = "NOT_SPAM";
 static const char *const MEMORY_EXCEPTION = "Memory allocation failed";
 static const char *USAGE = "Usage: SpamDetector <database path> <message path> <threshold>";
 
