@@ -3,9 +3,11 @@
 //
 #include <vector>
 #include <cmath>
-#include <unordered_map>
 #include <algorithm>
+#include <memory>
+#include <iostream>
 #include <cassert>
+
 #ifndef CPP_EX3_HASHMAP_HPP
 #define CPP_EX3_HASHMAP_HPP
 
@@ -69,10 +71,10 @@ public:
 	 */
 	HashMap(const HashMap<KeyT, ValueT> &other):
 			_capacity(other._capacity), _size(other._size),
-			_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor)
+			_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor),
+			_data(new bucket[_capacity])
 	{
-		_data = new bucket[_capacity];
-		std::copy(other._data, other._data + _capacity, _data);
+		std::copy(other._data.get(), other._data.get() + _capacity, _data.get());
 	}
 
 	/**
@@ -81,13 +83,13 @@ public:
 	 */
 	HashMap(double minLoadFactor, double maxLoadFactor):
 			_capacity(INITIAL_CAPACITY), _size(INITIAL_SIZE),
-			_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor)
+			_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor), _data(new bucket[_capacity])
 	{
 		if (!(0 < minLoadFactor && minLoadFactor < maxLoadFactor && maxLoadFactor < 1))
 		{
 			throw std::domain_error(LOAD_FACTOR_DOMAIN);
 		}
-		_data = new bucket[_capacity];
+
 	}
 
 	HashMap(HashMap && other) noexcept:
@@ -95,23 +97,19 @@ public:
 	_size(other._size), _maxLoadFactor(other._maxLoadFactor),
 	_minLoadFactor(other._size)
 	{
-		_data = other._data;
+		_data.reset();
+		_data = std::move(other._data);
 		other._minLoadFactor = 0;
-		other._maxLoadFactor =0;
+		other._maxLoadFactor = 0;
 		other._size = 0;
 		other._capacity = 0;
-		other._data = nullptr;
 	}
 
 	/**
 	 * dtor
 	 */
 
-	~HashMap()
-	{
-	    delete[] _data;
-        _data = nullptr;
-	}
+	~HashMap(){}
 
 	/**
 	 * @return number of elements
@@ -190,10 +188,9 @@ public:
 	 */
 	void clear()
 	{
-        delete[] _data;
         _size = 0;
-        _data = nullptr;
-        _data = new bucket[_capacity];
+        _data.reset();
+        _data = std::make_unique<bucket[]>(_capacity);
 	}
 
 	/**
@@ -221,7 +218,6 @@ public:
 		bool contained = bucketContainsKey(key, bucketIndex);
 		if (!contained)
 		{
-
 			_data[bucketIndex].emplace_back(key, value);
             ++_size;
             refreshMap(true);
@@ -282,35 +278,22 @@ public:
 		/**
 		 * @return pointer to pair
 		 */
-		inline const std::pair<KeyT, ValueT> *operator->() const { return _pair; }
+		inline const std::pair<KeyT, ValueT> *operator->() const { return &(*_pair); }
 
 		/**
 		 * @return incremented iterator
 		 */
         const const_iterator& operator++()
 		{
-			size_t index = _hashMap.getHash(_pair->first);
-			bucket b = _hashMap._data[index];
-			size_t i = 0;
-			for (; i < b.size(); i++)
+            int index = _hashMap.getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
+			if (++_pair == _hashMap._data[index].end() && index != lastIndex)
 			{
-				if (b[i].first == _pair->first)
-				{
-					break;
-				}
-			}
-			if (++i == b.size())
-			{
-				index++;
-				while (index < _hashMap._capacity && _hashMap._data[index].empty())
+			    _pair = _hashMap._data[++index].begin();
+				while (index < lastIndex && _hashMap._data[index].empty())
 				{
 					++index;
 				}
-				_pair = (index == _hashMap._capacity) ? nullptr : &(_hashMap._data[index][0]);
-			}
-			else
-			{
-				_pair = &(_hashMap._data[index][i]);
+				_pair = _hashMap._data[index].begin();
 			}
 			return *this;
 		}
@@ -339,23 +322,13 @@ public:
 
     private:
         friend class HashMap<KeyT, ValueT>;
-        const std::pair<KeyT,ValueT> * _pair;
+		typename bucket::const_iterator _pair;
         const HashMap& _hashMap;
 
         const_iterator(const HashMap& hashMap,
-                 const std::pair<KeyT,ValueT>* pair, bool endptr=false):
+                 const typename bucket::const_iterator pair):
                 _pair(pair), _hashMap(hashMap)
-        {
-	        size_t index = 0;
-	        if (!pair && !endptr && _hashMap._size > 0)
-	        {
-		        while (index < _hashMap._capacity && _hashMap._data[index].empty())
-		        {
-			        index++;
-		        }
-		        _pair = &(_hashMap._data[index][0]);
-	        }
-        }
+        {}
     };
 
     /**
@@ -363,7 +336,16 @@ public:
      */
     const const_iterator begin() const noexcept
     {
-        return const_iterator(*this, nullptr);
+        typename bucket::const_iterator it;
+        for (size_t i = 0; i <_capacity; ++i)
+        {
+            if (!_data[i].empty())
+            {
+                it = _data[i].begin();
+                break;
+            }
+        }
+        return const_iterator(*this, it);
     }
 
 	/**
@@ -371,7 +353,8 @@ public:
 	 */
 	const const_iterator end() const noexcept
 	{
-		return const_iterator(*this, nullptr, true);
+	    typename bucket::const_iterator it = _data[_capacity - 1].end();
+		return const_iterator(*this, it);
 	}
 
 	/**
@@ -379,7 +362,16 @@ public:
 	 */
 	const const_iterator cbegin() const noexcept
 	{
-		return const_iterator(*this, nullptr);
+        typename bucket::const_iterator it;
+        for (size_t i = 0; i <_capacity; ++i)
+        {
+            if (!_data[i].empty())
+            {
+                it = _data[i].begin();
+                break;
+            }
+        }
+        return const_iterator(*this, it);
 	}
 
 	/**
@@ -387,7 +379,8 @@ public:
 	 */
 	const const_iterator cend() const noexcept
 	{
-		return const_iterator(*this, nullptr, true);
+        typename bucket::iterator it = _data[_capacity - 1].end();
+        return const_iterator(*this, it);
 	}
 
 	/**
@@ -400,7 +393,7 @@ public:
 		{
 			_capacity = other._capacity;
 			clear();
-			std::copy(other._data, other._data + other._capacity, _data);
+			std::copy(other._data.get(), other._data.get() + other._capacity, _data.get());
 			_size = other._size;
 			_minLoadFactor = other._minLoadFactor;
 			_maxLoadFactor = other._maxLoadFactor;
@@ -425,28 +418,28 @@ public:
 
 	}
 
-	/**
-	 * @param other
-	 * @return
-	 */
-	HashMap &operator=(HashMap other) noexcept
-	{
-		swap(*this, other);
-		return *this;
-	}
-
-	/**
-	 * @param first
-	 * @param second
-	 */
-	friend void swap(HashMap &first, HashMap &second) noexcept
-	{
-		std::swap(first._size, second._size);
-		std::swap(first._capacity, second._capacity);
-		std::swap(first._minLoadFactor, second._minLoadFactor);
-		std::swap(first._maxLoadFactor, second._maxLoadFactor);
-		std::swap(first._data, second._data);
-	}
+//	/**
+//	 * @param other
+//	 * @return
+//	 */
+//	HashMap &operator=(HashMap other) noexcept
+//	{
+//		swap(*this, other);
+//		return *this;
+//	}
+//
+//	/**
+//	 * @param first
+//	 * @param second
+//	 */
+//	friend void swap(HashMap &first, HashMap &second) noexcept
+//	{
+//		std::swap(first._size, second._size);
+//		std::swap(first._capacity, second._capacity);
+//		std::swap(first._minLoadFactor, second._minLoadFactor);
+//		std::swap(first._maxLoadFactor, second._maxLoadFactor);
+//		std::swap(first._data, second._data);
+//	}
 
 	/**
 	 * @param key
@@ -496,7 +489,7 @@ public:
 private:
 	size_t _capacity, _size;
 	double _minLoadFactor, _maxLoadFactor;
-	bucket *_data;
+	std::unique_ptr<bucket[]> _data;
 
 	/**
 	 * @param key
@@ -539,17 +532,17 @@ private:
 	void updateContainer(bool enlarge)
 	{
 		size_t old_capacity = (enlarge) ? _capacity / 2 : _capacity * 2;
-		auto temp = new bucket[_capacity]();
+		auto temp = std::make_unique<bucket[]>(_capacity);
 		for (size_t i = 0; i < old_capacity; i++)
-		{
-			for (auto pair : _data[i])
-			{
-				size_t index = getHash(pair.first);
-				temp[index].push_back(pair);
-			}
-		}
-		delete[] _data;
-		_data = temp;
+        {
+            for (auto pair : _data[i])
+            {
+                size_t index = getHash(pair.first);
+                temp[index].push_back(pair);
+            }
+        }
+		_data.reset();
+		_data = std::move(temp);
 	}
 
 	/**
