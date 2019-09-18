@@ -418,28 +418,12 @@ public:
 
 	}
 
-//	/**
-//	 * @param other
-//	 * @return
-//	 */
-//	HashMap &operator=(HashMap other) noexcept
-//	{
-//		swap(*this, other);
-//		return *this;
-//	}
-//
-//	/**
-//	 * @param first
-//	 * @param second
-//	 */
-//	friend void swap(HashMap &first, HashMap &second) noexcept
-//	{
-//		std::swap(first._size, second._size);
-//		std::swap(first._capacity, second._capacity);
-//		std::swap(first._minLoadFactor, second._minLoadFactor);
-//		std::swap(first._maxLoadFactor, second._maxLoadFactor);
-//		std::swap(first._data, second._data);
-//	}
+	/**
+	 * @param other
+	 * @return
+	 */
+	HashMap &operator=(HashMap other) noexcept = default;
+
 
 	/**
 	 * @param key
