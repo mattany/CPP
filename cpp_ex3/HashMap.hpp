@@ -133,19 +133,18 @@ public:
 	 * @param key
 	 * @return
 	 */
-	ValueT& at(const KeyT& key)
+    ValueT& at(const KeyT& key)
     {
-		if (_size == 0 || _capacity == 0)
-		{
-			throw std::out_of_range(OUT_OF_RANGE);
-		}
-        size_t index = getHash(key);
-        auto it = getIterator(key, index);
-        if (it == _data[index].end())
+		if (_data != nullptr)
         {
-            throw std::out_of_range(OUT_OF_RANGE);
+            size_t index = getHash(key);
+            auto it = getIterator(key, index);
+            if (it != _data[index].end())
+            {
+                return it->second;
+            }
         }
-        return it->second;
+        throw std::out_of_range(OUT_OF_RANGE);
     }
 
     /**
@@ -154,13 +153,16 @@ public:
      */
     const ValueT& at(const KeyT& key) const
 	{
-        size_t index = getHash(key);
-        auto it = getConstIterator(key, index);
-        if (it == _data[index].end())
+        if (_data != nullptr)
         {
-            throw std::out_of_range(OUT_OF_RANGE);
+            size_t index = getHash(key);
+            auto it = getIterator(key, index);
+            if (it != _data[index].end())
+            {
+                return it->second;
+            }
         }
-        return it->second;
+        throw std::out_of_range(OUT_OF_RANGE);
 	}
 
 	/**
@@ -244,8 +246,7 @@ public:
 	bool erase(KeyT key)
 	{
 		size_t index = getHash(key);
-		auto it = std::find_if(_data[index].begin(), _data[index].end(),
-				[&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+		auto it = getIterator(key, index);
 		if (it != _data[index].end())
 		{
 			--_size;
@@ -286,15 +287,11 @@ public:
         const const_iterator& operator++()
 		{
             int index = _hashMap.getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
-			if (++_pair == _hashMap._data[index].end() && index != lastIndex)
-			{
-			    _pair = _hashMap._data[++index].begin();
-				while (index < lastIndex && _hashMap._data[index].empty())
-				{
-					++index;
-				}
-				_pair = _hashMap._data[index].begin();
-			}
+            if (++_pair == _hashMap._data[index].end() && index != lastIndex)
+            {
+                while (++index < lastIndex && _hashMap._data[index].empty()) {}
+                _pair = _hashMap._data[index].begin();
+            }
 			return *this;
 		}
 
@@ -336,16 +333,9 @@ public:
      */
     const const_iterator begin() const noexcept
     {
-        typename bucket::const_iterator it;
-        for (size_t i = 0; i <_capacity; ++i)
-        {
-            if (!_data[i].empty())
-            {
-                it = _data[i].begin();
-                break;
-            }
-        }
-        return const_iterator(*this, it);
+        size_t i = 0;
+        for (size_t & j = i; j <_capacity && _data[j].empty(); ++j) {}
+        return const_iterator(*this, _data[i].begin());
     }
 
 	/**
@@ -362,16 +352,9 @@ public:
 	 */
 	const const_iterator cbegin() const noexcept
 	{
-        typename bucket::const_iterator it;
-        for (size_t i = 0; i <_capacity; ++i)
-        {
-            if (!_data[i].empty())
-            {
-                it = _data[i].begin();
-                break;
-            }
-        }
-        return const_iterator(*this, it);
+        size_t i = 0;
+        for (size_t & j = i; j <_capacity && _data[j].empty(); ++j) {}
+        return const_iterator(*this, _data[i].begin());
 	}
 
 	/**
@@ -418,25 +401,24 @@ public:
 
 	}
 
+    /**
+ * @param key
+ * @return
+ */
+    const ValueT &operator[](const KeyT &key) const noexcept
+    {
+        size_t index = getHash(key);
+        auto it = std::find_if(_data[index].begin(), _data[index].end(),
+                               [&key](const std::pair<KeyT, ValueT> &p)
+                               { return p.first == key; });
+        return it->second;
+    }
+
 	/**
 	 * @param other
 	 * @return
 	 */
-	HashMap &operator=(HashMap other) noexcept = default;
-
-
-	/**
-	 * @param key
-	 * @return
-	 */
-	const ValueT &operator[](const KeyT &key) const noexcept
-	{
-		size_t index = getHash(key);
-		auto it = std::find_if(_data[index].begin(), _data[index].end(),
-		                       [&key](const std::pair<KeyT, ValueT> &p)
-		                       { return p.first == key; });
-		return it->second;
-	}
+	HashMap &operator=(HashMap && other) noexcept = default;
 
 	/**
 	 * @param other
