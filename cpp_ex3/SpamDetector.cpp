@@ -138,11 +138,11 @@ bool parseMessage(const std::vector<std::string> &keys,
     {
         return false;
     }
-    for (const std::pair<std::string, int> &pair : scoreMap)
+    while (getline(message, line))
     {
-        while (getline(message, line))
+        convertToLowercase(line);
+        for (const std::pair<std::string, int> &pair : scoreMap)
         {
-            convertToLowercase(line);
             size_t pos = line.find(pair.first, 0);
             while (pos != std::string::npos)
             {
@@ -150,7 +150,6 @@ bool parseMessage(const std::vector<std::string> &keys,
                 pos = line.find(pair.first, pos + pair.first.length());
             }
         }
-        message.clear();
     }
     message.close();
     return true;
