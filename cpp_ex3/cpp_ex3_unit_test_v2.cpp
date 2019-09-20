@@ -34,7 +34,7 @@ TEST(HashMapTest, minMaxFactorConstructor)
     EXPECT_ANY_THROW(StringMap h(0.5, 0.2));  //Order of args is (lower, upper) according to forum
 	EXPECT_ANY_THROW(StringMap h(0.2, 1.1));
 	EXPECT_ANY_THROW(StringMap h(-1, 0.2));
-	StringMap hashMap(0.5, 0.5);       //Not sure if legal - keep updated on forum
+	StringMap hashMap(0.5, 0.6);       //Not sure if legal - keep updated on forum
 
     EXPECT_EQ(hashMap.size() , 0);
     EXPECT_EQ(hashMap.capacity() , 16);

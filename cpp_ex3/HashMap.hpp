@@ -335,7 +335,8 @@ public:
     {
         size_t i = 0;
         for (size_t & j = i; j <_capacity && _data[j].empty(); ++j) {}
-        return const_iterator(*this, _data[i].begin());
+
+        return (i == _capacity) ? const_iterator(*this, _data[i-1].end()) : const_iterator(*this, _data[i].begin());
     }
 
 	/**

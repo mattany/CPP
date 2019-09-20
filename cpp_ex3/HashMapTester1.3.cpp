@@ -353,10 +353,10 @@ void testInsertAndEraseRandom()
             assert(myMap.at(val.first) == val.second);
         }
 
-        for (HashMap<int, int>::const_iterator it = myMap.begin(); it != myMap.end(); it++)
+        for (std::pair<int, int> val : myMap)
         {
             countMyMap++;
-            assert(stdMap.at(it->first) == it->second);
+            assert(stdMap.at(val.first) == val.second);
         }
     }
     catch (...)
