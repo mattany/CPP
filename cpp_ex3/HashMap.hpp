@@ -92,6 +92,10 @@ public:
 
 	}
 
+	/**
+	 * move ctor
+	 * @param other
+	 */
 	HashMap(HashMap && other) noexcept:
 	_capacity(other._capacity),
 	_size(other._size), _maxLoadFactor(other._maxLoadFactor),
@@ -108,7 +112,6 @@ public:
 	/**
 	 * dtor
 	 */
-
 	~HashMap(){}
 
 	/**
@@ -131,7 +134,7 @@ public:
 
 	/**
 	 * @param key
-	 * @return
+	 * @return value at key
 	 */
     ValueT& at(const KeyT& key)
     {
@@ -149,7 +152,7 @@ public:
 
     /**
      * @param key
-     * @return
+     * @return value at key
      */
     const ValueT& at(const KeyT& key) const
 	{
@@ -167,7 +170,7 @@ public:
 
 	/**
 	 * @param key
-	 * @return
+	 * @return size of bucket containing key
 	 */
 	int bucketSize(const KeyT &key) const
 	{
@@ -186,7 +189,7 @@ public:
 	inline bool empty() const { return _size == 0; }
 
 	/**
-	 *
+	 *	empty map
 	 */
 	void clear()
 	{
@@ -197,7 +200,7 @@ public:
 
 	/**
 	 * @param key
-	 * @return
+	 * @return true iff map contains key
 	 */
 	bool containsKey(KeyT key) const
 	{
@@ -212,7 +215,7 @@ public:
 	/**
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return true iff success
 	 */
 	bool insert(KeyT key, ValueT value)
 	{
@@ -231,7 +234,7 @@ public:
 	/**
 	 * @param key
 	 * @param index
-	 * @return
+	 * @return true iff bucket at index contains key
 	 */
 	bool bucketContainsKey(KeyT key, size_t index) const
 	{
@@ -241,7 +244,7 @@ public:
 
 	/**
 	 * @param key
-	 * @return
+	 * @return true iff success
 	 */
 	bool erase(KeyT key)
 	{
@@ -258,18 +261,20 @@ public:
 	}
 
 	/**
-	 *
+	 * The iterator class - wraps the built in iterator of vector
 	 */
     class const_iterator
     {
     public:
 
+    	/**
+    	 * ctor
+    	 */
     	const_iterator()
     	{
     		_hashMap(HashMap());
 		    _pair(std::make_pair(KeyT(),ValueT()));
     	}
-
 
 		/**
 		 * @return dereferenced pair
@@ -286,7 +291,7 @@ public:
 		 */
         const const_iterator& operator++()
 		{
-            int index = _hashMap.getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
+            size_t index = _hashMap.getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
             if (++_pair == _hashMap._data[index].end() && index != lastIndex)
             {
                 while (++index < lastIndex && _hashMap._data[index].empty()) {}
@@ -295,6 +300,9 @@ public:
 			return *this;
 		}
 
+		/**
+		 * @return incremented iterator
+		 */
 	    const const_iterator operator++(int)
 	    {
 		    const_iterator tmp = *this;
@@ -311,36 +319,40 @@ public:
 
 		/**
 		 * @param other
-		 * @return true iff equal
+		 * @return true iff not equal
 		 */
 		inline bool operator!=(const_iterator const &other) const
 		{ return (!operator==(other)); }
 
 
     private:
-        friend class HashMap<KeyT, ValueT>;
-		typename bucket::const_iterator _pair;
-        const HashMap& _hashMap;
+        friend class HashMap<KeyT, ValueT>; /** needed to call ctor */
+		typename bucket::const_iterator _pair; /** wrapped iterator*/
+        const HashMap& _hashMap; /** needed to access the data and other methods*/
 
+        /**
+         * @param hashMap
+         * @param pair iterator to current element
+         */
         const_iterator(const HashMap& hashMap,
                  const typename bucket::const_iterator pair):
                 _pair(pair), _hashMap(hashMap)
         {}
     };
 
-    /**
-     * @return
-     */
+	/**
+ 	* @return iterator to first element
+ 	*/
     const const_iterator begin() const noexcept
     {
         size_t i = 0;
-        for (size_t & j = i; j <_capacity && _data[j].empty(); ++j) {}
-
-        return (i == _capacity) ? const_iterator(*this, _data[i-1].end()) : const_iterator(*this, _data[i].begin());
+		while (_data[i].empty() && ++i <_capacity){}
+		auto it = (i ==_capacity) ? _data[--i].end() : _data[i].begin();
+		return const_iterator(*this, it);
     }
 
 	/**
-	 * @return
+	 * @return iterator to element after last
 	 */
 	const const_iterator end() const noexcept
 	{
@@ -349,17 +361,18 @@ public:
 	}
 
 	/**
-	 * @return
+	 * @return iterator to first element
 	 */
 	const const_iterator cbegin() const noexcept
 	{
-        size_t i = 0;
-        for (size_t & j = i; j <_capacity && _data[j].empty(); ++j) {}
-        return const_iterator(*this, _data[i].begin());
+		size_t i = 0;
+		while (_data[i].empty() && ++i <_capacity){}
+		auto it = (i ==_capacity) ? _data[--i].end() : _data[i].begin();
+		return const_iterator(*this, it);
 	}
 
 	/**
-	 * @return
+	 * @return iterator to element after last
 	 */
 	const const_iterator cend() const noexcept
 	{
@@ -368,26 +381,8 @@ public:
 	}
 
 	/**
-	 * @param other
-	 * @return
-	 */
-	HashMap &operator=(const HashMap &other)
-	{
-		if (this != &other)
-		{
-			_capacity = other._capacity;
-			clear();
-			std::copy(other._data.get(), other._data.get() + other._capacity, _data.get());
-			_size = other._size;
-			_minLoadFactor = other._minLoadFactor;
-			_maxLoadFactor = other._maxLoadFactor;
-		}
-		return *this;
-	}
-
-	/**
 	 * @param key
-	 * @return
+	 * @return val
 	 */
 	ValueT &operator[](const KeyT &key) noexcept
 	{
@@ -403,9 +398,9 @@ public:
 	}
 
     /**
- * @param key
- * @return
- */
+	 * @param key
+	 * @return val
+	 */
     const ValueT &operator[](const KeyT &key) const noexcept
     {
         size_t index = getHash(key);
@@ -416,14 +411,43 @@ public:
     }
 
 	/**
+	 * copy assignment operator
 	 * @param other
-	 * @return
+	 * @return reference to this
 	 */
-	HashMap &operator=(HashMap && other) noexcept = default;
+	HashMap &operator=(HashMap other)
+	{
+		swap(*this, other);
+		return *this;
+	}
+
+	/**
+	 * move assignment operator
+	 * @param other
+	 * @return reference to this
+	 */
+	HashMap &operator=(HashMap && other) noexcept
+	{
+		swap(*this, other);
+		return *this;
+	}
+
+	/**
+	 * @param first
+	 * @param second
+	 */
+	friend void swap(HashMap& first, HashMap& second) noexcept
+	{
+		std::swap(first._size, second._size);
+		std::swap(first._capacity, second._capacity);
+		std::swap(first._minLoadFactor, second._minLoadFactor);
+		std::swap(first._maxLoadFactor, second._maxLoadFactor);
+		std::swap(first._data, second._data);
+	}
 
 	/**
 	 * @param other
-	 * @return
+	 * @return result
 	 */
 	bool operator==(const HashMap &other) const
 	{
@@ -446,7 +470,7 @@ public:
 
 	/**
 	 * @param other
-	 * @return
+	 * @return result
 	 */
 	bool operator!=(const HashMap &other)
 	{
@@ -454,14 +478,14 @@ public:
 	}
 
 private:
-	size_t _capacity, _size;
+	size_t _capacity, _size;  /** of container **/
 	double _minLoadFactor, _maxLoadFactor;
-	std::unique_ptr<bucket[]> _data;
+	std::unique_ptr<bucket[]> _data; /** the container**/
 
 	/**
 	 * @param key
-	 * @param index
-	 * @return
+	 * @param index index of bucket
+	 * @return iterator to element at key or end() if fail
 	 */
 	const typename bucket::iterator getIterator(const KeyT &key, size_t index) const
 	{
@@ -471,22 +495,10 @@ private:
 		                    { return p.first == key; });
 	}
 
-	/**
-	 * @param key
-	 * @param index
-	 * @return
-	 */
-	const typename bucket::const_iterator getConstIterator(const KeyT &key, size_t index) const
-	{
-
-		return std::find_if(_data[index].begin(), _data[index].end(),
-		                    [&key](const std::pair<KeyT, ValueT> &p)
-		                    { return p.first == key; });
-	}
 
 	/**
 	 * @param key
-	 * @return
+	 * @return hash
 	 */
 	size_t getHash(KeyT key) const
 	{
@@ -494,7 +506,7 @@ private:
 	}
 
 	/**
-	 * @param enlarge
+	 * @param enlarge needed to determine whether to increase or decrease container size
 	 */
 	void updateContainer(bool enlarge)
 	{
@@ -513,7 +525,7 @@ private:
 	}
 
 	/**
-	 * @param insert
+	 * @param insert needed to determine if size decrease is possible
 	 */
 	void refreshMap(bool insert)
 	{

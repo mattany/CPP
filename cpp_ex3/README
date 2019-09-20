@@ -1,0 +1,10 @@
+cpp_ex3
+mattan
+31229258
+######
+
+HashMap - A data structure very similar to the STL unordered_map. I chose to use unique_ptr to
+avoid dealing with memory allocation directly. In the iterator I wrapped the built in iterator
+of vector.
+
+SpamDetector - A program to detect spam that uses HashMap.
