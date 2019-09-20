@@ -71,9 +71,9 @@ public:
 	 */
 	HashMap(const HashMap<KeyT, ValueT> &other):
 			_capacity(other._capacity), _size(other._size),
-			_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor),
-			_data(new bucket[_capacity])
+			_minLoadFactor(other._minLoadFactor), _maxLoadFactor(other._maxLoadFactor)
 	{
+		_data = std::make_unique<bucket[]>(_capacity);
 		std::copy(other._data.get(), other._data.get() + _capacity, _data.get());
 	}
 
@@ -83,13 +83,13 @@ public:
 	 */
 	HashMap(double minLoadFactor, double maxLoadFactor):
 			_capacity(INITIAL_CAPACITY), _size(INITIAL_SIZE),
-			_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor), _data(new bucket[_capacity])
+			_minLoadFactor(minLoadFactor), _maxLoadFactor(maxLoadFactor)
 	{
 		if (!(0 < minLoadFactor && minLoadFactor < maxLoadFactor && maxLoadFactor < 1))
 		{
 			throw std::domain_error(LOAD_FACTOR_DOMAIN);
 		}
-
+		_data = std::make_unique<bucket[]>(_capacity);
 	}
 
 	/**
@@ -140,8 +140,8 @@ public:
     {
 		if (_data != nullptr)
         {
-            size_t index = getHash(key);
-            auto it = getIterator(key, index);
+            size_t index = _getHash(key);
+            auto it = _getIterator(key, index);
             if (it != _data[index].end())
             {
                 return it->second;
@@ -158,8 +158,8 @@ public:
 	{
         if (_data != nullptr)
         {
-            size_t index = getHash(key);
-            auto it = getIterator(key, index);
+            size_t index = _getHash(key);
+            auto it = _getIterator(key, index);
             if (it != _data[index].end())
             {
                 return it->second;
@@ -178,7 +178,7 @@ public:
 		{
 			throw std::out_of_range(OUT_OF_RANGE);
 		}
-		size_t index = getHash(key);
+		size_t index = _getHash(key);
 		return _data[index].size();
 
 	}
@@ -208,7 +208,7 @@ public:
 		{
 			return false;
 		}
-		size_t bucketIndex = getHash(key);
+		size_t bucketIndex = _getHash(key);
 		return (bucketContainsKey(key, bucketIndex));
 	}
 
@@ -219,13 +219,13 @@ public:
 	 */
 	bool insert(KeyT key, ValueT value)
 	{
-		size_t bucketIndex = getHash(key);
+		size_t bucketIndex = _getHash(key);
 		bool contained = bucketContainsKey(key, bucketIndex);
 		if (!contained)
 		{
 			_data[bucketIndex].emplace_back(key, value);
             ++_size;
-            refreshMap(true);
+			_refreshMap(true);
 			return true;
 		}
 		return false;
@@ -239,7 +239,7 @@ public:
 	bool bucketContainsKey(KeyT key, size_t index) const
 	{
 		return any_of(_data[index].begin(), _data[index].end(),
-		              [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key;});
+		              [&key](const std::pair<KeyT, ValueT>& p) { return p.first == key; });
 	}
 
 	/**
@@ -248,13 +248,13 @@ public:
 	 */
 	bool erase(KeyT key)
 	{
-		size_t index = getHash(key);
-		auto it = getIterator(key, index);
+		size_t index = _getHash(key);
+		auto it = _getIterator(key, index);
 		if (it != _data[index].end())
 		{
 			--_size;
 			_data[index].erase(it);
-            refreshMap(false);
+			_refreshMap(false);
             return true;
 		}
 		return false;
@@ -273,7 +273,7 @@ public:
     	const_iterator()
     	{
     		_hashMap(HashMap());
-		    _pair(std::make_pair(KeyT(),ValueT()));
+		    _pair(std::make_pair(KeyT(), ValueT()));
     	}
 
 		/**
@@ -291,10 +291,12 @@ public:
 		 */
         const const_iterator& operator++()
 		{
-            size_t index = _hashMap.getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
+            size_t index = _hashMap._getHash(_pair->first), lastIndex = _hashMap._capacity - 1;
             if (++_pair == _hashMap._data[index].end() && index != lastIndex)
             {
-                while (++index < lastIndex && _hashMap._data[index].empty()) {}
+                while (++index < lastIndex && _hashMap._data[index].empty())
+                {
+                }
                 _pair = _hashMap._data[index].begin();
             }
 			return *this;
@@ -334,9 +336,8 @@ public:
          * @param hashMap
          * @param pair iterator to current element
          */
-        const_iterator(const HashMap& hashMap,
-                 const typename bucket::const_iterator pair):
-                _pair(pair), _hashMap(hashMap)
+        const_iterator(const HashMap& hashMap, const typename bucket::const_iterator pair):
+        _pair(pair), _hashMap(hashMap)
         {}
     };
 
@@ -346,8 +347,10 @@ public:
     const const_iterator begin() const noexcept
     {
         size_t i = 0;
-		while (_data[i].empty() && ++i <_capacity){}
-		auto it = (i ==_capacity) ? _data[--i].end() : _data[i].begin();
+		while (_data[i].empty() && ++i <_capacity)
+		{
+		}
+		auto it = (i == _capacity) ? _data[--i].end() : _data[i].begin();
 		return const_iterator(*this, it);
     }
 
@@ -366,8 +369,10 @@ public:
 	const const_iterator cbegin() const noexcept
 	{
 		size_t i = 0;
-		while (_data[i].empty() && ++i <_capacity){}
-		auto it = (i ==_capacity) ? _data[--i].end() : _data[i].begin();
+		while (_data[i].empty() && ++i <_capacity)
+		{
+		}
+		auto it = (i == _capacity) ? _data[--i].end() : _data[i].begin();
 		return const_iterator(*this, it);
 	}
 
@@ -386,12 +391,12 @@ public:
 	 */
 	ValueT &operator[](const KeyT &key) noexcept
 	{
-		size_t index = getHash(key);
-		auto it = getIterator(key, index);
+		size_t index = _getHash(key);
+		auto it = _getIterator(key, index);
 		if (it == _data[index].end())
 		{
 			insert(key, ValueT());
-			it = getIterator(key, getHash(key));
+			it = _getIterator(key, _getHash(key));
 		}
 		return it->second;
 
@@ -403,7 +408,7 @@ public:
 	 */
     const ValueT &operator[](const KeyT &key) const noexcept
     {
-        size_t index = getHash(key);
+        size_t index = _getHash(key);
         auto it = std::find_if(_data[index].begin(), _data[index].end(),
                                [&key](const std::pair<KeyT, ValueT> &p)
                                { return p.first == key; });
@@ -487,7 +492,7 @@ private:
 	 * @param index index of bucket
 	 * @return iterator to element at key or end() if fail
 	 */
-	const typename bucket::iterator getIterator(const KeyT &key, size_t index) const
+	const typename bucket::iterator _getIterator(const KeyT &key, size_t index) const
 	{
 
 		return std::find_if(_data[index].begin(), _data[index].end(),
@@ -500,7 +505,7 @@ private:
 	 * @param key
 	 * @return hash
 	 */
-	size_t getHash(KeyT key) const
+	size_t _getHash(KeyT key) const
 	{
 		return std::hash<KeyT>{}(key) & (_capacity - 1);
 	}
@@ -508,7 +513,7 @@ private:
 	/**
 	 * @param enlarge needed to determine whether to increase or decrease container size
 	 */
-	void updateContainer(bool enlarge)
+	void _updateContainer(bool enlarge)
 	{
 		size_t old_capacity = (enlarge) ? _capacity / 2 : _capacity * 2;
 		auto temp = std::make_unique<bucket[]>(_capacity);
@@ -516,7 +521,7 @@ private:
         {
             for (auto pair : _data[i])
             {
-                size_t index = getHash(pair.first);
+                size_t index = _getHash(pair.first);
                 temp[index].push_back(pair);
             }
         }
@@ -527,17 +532,17 @@ private:
 	/**
 	 * @param insert needed to determine if size decrease is possible
 	 */
-	void refreshMap(bool insert)
+	void _refreshMap(bool insert)
 	{
 		if (!insert && getLoadFactor() < _minLoadFactor && _capacity > 1)
 		{
 			_capacity /= 2;
-			return updateContainer(false);
+			return _updateContainer(false);
 		}
 		if (getLoadFactor() > _maxLoadFactor)
 		{
 			_capacity *= 2;
-			return updateContainer(true);
+			return _updateContainer(true);
 		}
 	}
 };
