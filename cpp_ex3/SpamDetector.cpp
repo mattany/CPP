@@ -147,7 +147,7 @@ bool parseMessage(const std::vector<std::string> &keys,
             while (pos != std::string::npos)
             {
                 totalScore += pair.second;
-                pos = line.find(pair.first, pos);
+                pos = line.find(pair.first, pos + pair.first.length());
             }
         }
         message.clear();
