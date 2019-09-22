@@ -22,17 +22,6 @@ static const char *const LOAD_FACTOR_DOMAIN = "Load Factors should be between 0 
 #endif //CPP_EX3_HASHMAP_HPP
 
 /**
- * vector length exception
- */
-struct NonEqualLengthException : std::exception
-{
-	const char *what() const noexcept override
-	{
-		return NON_EQUAL_LENGTH;
-	}
-};
-
-/**
  * HashMap template class
  * @tparam KeyT key type
  * @tparam ValueT value type
@@ -57,7 +46,7 @@ public:
 	{
 		if (keys.size() != values.size())
 		{
-			throw NonEqualLengthException();
+			throw std::length_error(NON_EQUAL_LENGTH);
 		}
 		for (size_t i = 0; i < keys.size(); i++)
 		{
