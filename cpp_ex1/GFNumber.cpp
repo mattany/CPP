@@ -25,16 +25,16 @@ GFNumber *GFNumber::getPrimeFactors(int *size) const
     }
     long *temp = new long[*size]();
     _halve(n, temp, size);
-    if (GField::isPrime(n))
-    {
-        *size = 0;
-        n = 1;   // Terminate quickly
-    }
     while (_pollardRho(n, temp, size))
     {
         n /= temp[*size - 1];
     }
     _naiveSearch(n, temp, size);
+	if (*size == 1)   // n was prime
+	{
+		*size = 0;
+		n = 1;
+	}
     auto *factors = new GFNumber[*size];
     for (int i = 0; i < *size; i++)
     {
